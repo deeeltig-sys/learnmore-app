@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#060C18"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="description" content="LearnMore — Pɛ Adesua. AI Learning Hub for African students, powered by ProjectX Web Development."/>
+<title>LearnMore — Pɛ Adesua</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #060C18;
+  --surface:     #0A1525;
+  --surface2:    #0E1C32;
+  --surface3:    #132540;
+  --blue:        #2A7FFF;
+  --blue2:       #1060E8;
+  --blue-dim:    rgba(42,127,255,0.1);
+  --blue-border: rgba(42,127,255,0.28);
+  --blue-glow:   rgba(42,127,255,0.5);
+  --text:        #D8E8F8;
+  --text2:       #8AAAC8;
+  --muted:       #4D6A8A;
+  --border:      #112030;
+  --border2:     #1A2E48;
+  --err-bg:      rgba(220,38,38,0.1);
+  --err-c:       #FCA5A5;
+  --info-bg:     rgba(42,127,255,0.1);
+  --info-c:      #93C5FD;
+  --ok-bg:       rgba(34,197,94,0.1);
+  --ok-c:        #86EFAC;
+
+  /* Onboarding-only "electric blue + silver" theme */
+  --ob-bg:        #EEF2F8;
+  --ob-surface:   #FFFFFF;
+  --ob-surface2:  #F4F7FC;
+  --ob-border:    #D7DEEA;
+  --ob-border2:   #C3CEE2;
+  --ob-text:      #1B2540;
+  --ob-text2:     #5A6B8C;
+  --ob-muted:     #97A6C4;
+  --ob-blue:      #2A7FFF;
+  --ob-blue2:     #1060E8;
+  --ob-blue-dim:  rgba(42,127,255,0.08);
+  --ob-blue-border: rgba(42,127,255,0.25);
+  --ob-blue-glow: rgba(42,127,255,0.28);
+  --ob-silver:    #C9D3E4;
+}
+
+html, body {
+  height: 100%; background: var(--bg);
+  color: var(--text); overflow: hidden;
+  font-family: 'DM Sans', 'Segoe UI', sans-serif;
+  font-size: 15px;
+}
+
+/* ── SCREENS ────────────────────────────────────── */
+.screen {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px; z-index: 100;
+  background: var(--bg);
+  transition: opacity 0.4s ease;
+}
+.screen.hidden { opacity: 0; pointer-events: none; }
+.screen.gone   { display: none !important; }
+
+/* Onboarding screen gets the brighter "electric blue + silver" theme */
+.screen#onboarding {
+  background: linear-gradient(160deg, var(--ob-bg) 0%, #E4EAF4 100%);
+}
+
+/* ── GPU ERROR ──────────────────────────────────── */
+.err-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-top: 3px solid var(--blue);
+  border-radius: 14px;
+  padding: 44px 36px;
+  max-width: 420px; width: 100%;
+  text-align: center;
+}
+.err-icon { font-size: 2.6rem; margin-bottom: 16px; }
+.err-card h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.35rem; color: var(--text);
+  margin-bottom: 14px; font-weight: 700;
+}
+.err-card p { font-size: 0.84rem; color: var(--text2); line-height: 1.8; }
+.err-code {
+  display: inline-block; margin-top: 14px;
+  background: var(--surface2); border: 1px solid var(--blue-border);
+  color: var(--blue); padding: 5px 14px; border-radius: 6px;
+  font-size: 0.82rem; font-family: monospace; letter-spacing: 0.5px;
+}
+
+/* ── LOADER ─────────────────────────────────────── */
+.load-wrap {
+  width: 100%; max-width: 380px;
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+}
+.load-brand {
+  display: flex; flex-direction: column;
+  align-items: center; margin-bottom: 34px;
+}
+.load-brand img.projectx-logo {
+  height: 88px; width: auto;
+  border-radius: 14px;
+  margin-bottom: 14px;
+  box-shadow: 0 0 36px rgba(42,127,255,0.22);
+}
+.load-brand .ob-credential {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 8px; padding: 5px 12px 5px 6px;
+}
+.load-brand img.usted-logo {
+  height: 30px; width: auto;
+  background: #fff; border-radius: 6px;
+  padding: 3px;
+}
+.load-brand .ob-credential-text {
+  font-size: 0.6rem; color: var(--text2);
+  letter-spacing: 0.8px; text-transform: uppercase;
+  font-weight: 600; text-align: left; line-height: 1.5;
+}
+.load-brand .ob-credential-text b {
+  display: block; font-size: 0.66rem; color: var(--text);
+  letter-spacing: 0.4px;
+}
+.load-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 2.8rem; font-weight: 800;
+  color: var(--blue); letter-spacing: -1px;
+  margin-bottom: 4px;
+  text-shadow: 0 0 48px var(--blue-glow);
+}
+.load-pe {
+  font-size: 0.78rem; color: var(--muted);
+  letter-spacing: 3px; text-transform: uppercase;
+  font-weight: 600; margin-bottom: 52px;
+}
+.load-status {
+  font-size: 0.8rem; color: var(--text2);
+  font-weight: 500; margin-bottom: 16px;
+  min-height: 20px; letter-spacing: 0.2px;
+  transition: all 0.4s ease;
+}
+.progress-track {
+  width: 100%; height: 2px;
+  background: var(--surface3);
+  border-radius: 100px;
+  margin-bottom: 10px;
+  position: relative; overflow: visible;
+}
+.progress-fill {
+  height: 100%; width: 0%;
+  background: var(--blue);
+  border-radius: 100px;
+  transition: width 0.6s ease;
+  box-shadow: 0 0 14px var(--blue-glow), 0 0 28px rgba(42,127,255,0.3);
+}
+.progress-pct {
+  font-size: 0.7rem; color: var(--muted);
+  margin-bottom: 44px; font-weight: 700;
+  letter-spacing: 1px;
+}
+.load-note {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-left: 2px solid var(--blue);
+  border-radius: 8px; padding: 14px 16px;
+  font-size: 0.74rem; color: var(--text2);
+  line-height: 1.75; text-align: left; width: 100%;
+}
+.load-note b { color: var(--blue); font-weight: 700; }
+
+/* ── ONBOARDING ──────────────────────────────────── */
+.ob-card {
+  background: var(--ob-surface);
+  border: 1px solid var(--ob-border);
+  border-top: 3px solid var(--ob-silver);
+  border-radius: 16px;
+  padding: 40px 34px 32px;
+  width: 100%; max-width: 460px;
+  box-shadow: 0 0 80px rgba(42,127,255,0.07),
+              0 24px 64px rgba(27,37,64,0.10);
+}
+.ob-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem; font-weight: 800;
+  color: var(--ob-blue); letter-spacing: -0.5px;
+  margin-bottom: 2px;
+}
+.ob-pe {
+  font-size: 0.68rem; color: var(--ob-muted);
+  letter-spacing: 2.5px; text-transform: uppercase;
+  font-weight: 600; margin-bottom: 30px;
+}
+.ob-label {
+  display: block;
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 1.8px; text-transform: uppercase;
+  color: var(--ob-muted); margin-bottom: 9px;
+}
+.ob-field { margin-bottom: 20px; }
+.ob-input {
+  width: 100%; padding: 11px 14px;
+  background: var(--ob-surface2);
+  border: 1.5px solid var(--ob-border2);
+  border-radius: 8px; font-size: 0.88rem;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--ob-text); outline: none;
+  transition: border-color 0.2s;
+}
+.ob-input::placeholder { color: var(--ob-muted); font-style: italic; }
+.ob-input:focus { border-color: var(--ob-blue); }
+.ob-hint {
+  font-size: 0.7rem; color: var(--ob-muted);
+  margin-top: 6px; line-height: 1.55;
+}
+.ob-model-row {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.7rem; color: var(--ob-muted);
+  margin-bottom: 14px; font-weight: 500;
+}
+.mdot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--ob-muted); flex-shrink: 0; transition: all 0.3s;
+}
+.mdot.loading { background: #F59E0B; animation: blink 1s infinite; }
+.mdot.ready   { background: #22C55E; box-shadow: 0 0 7px rgba(34,197,94,0.8); }
+.mdot.err     { background: #EF4444; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }
+.ob-start {
+  width: 100%; padding: 13px; margin-top: 4px;
+  background: var(--ob-blue); color: #fff;
+  border: none; border-radius: 8px;
+  font-size: 0.92rem; font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer; letter-spacing: 0.4px;
+  transition: all 0.2s;
+  opacity: 0.2; pointer-events: none;
+  box-shadow: 0 0 20px rgba(42,127,255,0);
+}
+.ob-start.ready {
+  opacity: 1; pointer-events: all;
+  box-shadow: 0 0 24px var(--ob-blue-glow);
+}
+.ob-start.ready:hover { background: var(--ob-blue2); }
+
+
+/* ── APP LAYOUT ──────────────────────────────────── */
+#app { display: none; height: 100vh; flex-direction: column; }
+#app.visible { display: flex; }
+
+/* Header */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  height: 54px; padding: 0 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.h-left { display: flex; align-items: center; gap: 11px; }
+.h-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.15rem; font-weight: 800;
+  color: var(--blue); letter-spacing: -0.2px;
+}
+.h-pe {
+  font-size: 0.62rem; color: var(--muted);
+  letter-spacing: 1.5px; font-weight: 600;
+  text-transform: uppercase;
+}
+.h-sep { width: 1px; height: 16px; background: var(--border2); }
+.h-name { font-size: 0.8rem; font-weight: 600; color: var(--text); }
+.h-right { display: flex; align-items: center; gap: 7px; }
+.hbadge {
+  background: var(--surface2); color: var(--blue);
+  font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 0.7px; text-transform: uppercase;
+  padding: 3px 9px; border-radius: 4px;
+  border: 1px solid var(--blue-border);
+  max-width: 150px; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap;
+}
+.h-btn {
+  background: transparent; border: 1px solid var(--border2);
+  color: var(--muted); font-size: 0.68rem; font-weight: 600;
+  padding: 4px 10px; border-radius: 5px;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s; letter-spacing: 0.3px;
+}
+.h-btn:hover { border-color: var(--blue); color: var(--blue); }
+
+/* Action bar */
+.action-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 5px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0; min-height: 34px;
+}
+.stats-txt { font-size: 0.69rem; color: var(--muted); font-weight: 500; }
+.stats-txt b { color: var(--blue); font-weight: 700; }
+.bar-btns { display: flex; gap: 7px; }
+.bar-btn {
+  background: var(--surface2); border: 1px solid var(--border2);
+  color: var(--text2); font-size: 0.69rem; font-weight: 600;
+  padding: 4px 11px; border-radius: 5px;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s; letter-spacing: 0.3px;
+}
+.bar-btn:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+.bar-btn.quiz-on { background: #16A34A; color: #fff; border-color: #16A34A; }
+
+/* Chat */
+#chat {
+  flex: 1; overflow-y: auto;
+  padding: 20px 18px;
+  display: flex; flex-direction: column;
+  gap: 15px; scroll-behavior: smooth;
+}
+#chat::-webkit-scrollbar { width: 3px; }
+#chat::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+#chat::-webkit-scrollbar-track { background: transparent; }
+
+/* Welcome */
+.welcome-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--blue);
+  border-radius: 12px; padding: 26px 22px;
+  max-width: 430px; margin: 8px auto 0; width: 100%;
+}
+.welcome-card h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.2rem; color: var(--text);
+  margin-bottom: 9px; font-weight: 700;
+}
+.welcome-card p { font-size: 0.82rem; color: var(--text2); line-height: 1.78; }
+.wc-topic {
+  display: inline-block; margin-top: 14px;
+  background: var(--blue-dim); border: 1px solid var(--blue-border);
+  color: var(--blue); font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 4px;
+}
+
+/* Messages */
+.msg {
+  display: flex; flex-direction: column;
+  max-width: 78%;
+  animation: fadeUp 0.22s ease;
+}
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(5px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.msg.user { align-self: flex-end; align-items: flex-end; }
+.msg.ai   { align-self: flex-start; align-items: flex-start; }
+.msg-role {
+  font-size: 0.59rem; font-weight: 700;
+  letter-spacing: 1.8px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 4px;
+}
+.msg.ai .msg-role { color: var(--blue); }
+.msg-bubble {
+  padding: 11px 15px; border-radius: 11px;
+  font-size: 0.87rem; line-height: 1.78;
+  white-space: pre-wrap; word-break: break-word;
+  position: relative;
+}
+.msg.user .msg-bubble {
+  background: var(--blue); color: #fff;
+  border-bottom-right-radius: 3px;
+  box-shadow: 0 4px 16px rgba(42,127,255,0.25);
+}
+.msg.ai .msg-bubble {
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border2);
+  border-bottom-left-radius: 3px;
+  padding-right: 54px;
+}
+.copy-btn {
+  position: absolute; top: 8px; right: 8px;
+  background: var(--surface2); border: 1px solid var(--border2);
+  color: var(--muted); font-size: 0.59rem; font-weight: 700;
+  letter-spacing: 0.4px; padding: 2px 7px; border-radius: 4px;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  opacity: 0; transition: all 0.15s;
+}
+.msg.ai .msg-bubble:hover .copy-btn { opacity: 1; }
+.copy-btn:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+/* Typing */
+.typing-wrap { align-self: flex-start; }
+.typing {
+  display: flex; gap: 5px; align-items: center;
+  padding: 12px 15px;
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 11px; border-bottom-left-radius: 3px;
+  width: fit-content;
+}
+.typing span {
+  width: 6px; height: 6px; background: var(--blue);
+  border-radius: 50%; animation: tdot 1.2s infinite; opacity: 0.25;
+}
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes tdot {
+  0%,80%,100% { opacity:0.25; transform:scale(1); }
+  40%          { opacity:1;   transform:scale(1.3); }
+}
+
+/* System messages */
+.sys-msg {
+  font-size: 0.76rem; padding: 8px 14px;
+  border-radius: 7px; align-self: center;
+  text-align: center; max-width: 90%; line-height: 1.6;
+}
+.sys-msg.error { background: var(--err-bg); color: var(--err-c); border: 1px solid rgba(220,38,38,0.2); }
+.sys-msg.info  { background: var(--info-bg); color: var(--info-c); border: 1px solid rgba(42,127,255,0.2); }
+.sys-msg.ok    { background: var(--ok-bg); color: var(--ok-c); border: 1px solid rgba(34,197,94,0.2); }
+
+/* Chips */
+.chips-bar {
+  padding: 7px 18px; display: flex; gap: 7px;
+  flex-wrap: nowrap; overflow-x: auto;
+  flex-shrink: 0; border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+.chips-bar::-webkit-scrollbar { display: none; }
+.chip {
+  background: var(--surface); border: 1px solid var(--border2);
+  color: var(--text2); font-size: 0.71rem; font-weight: 500;
+  font-family: 'DM Sans', sans-serif; padding: 5px 12px;
+  border-radius: 20px; cursor: pointer; white-space: nowrap;
+  transition: all 0.15s; flex-shrink: 0;
+}
+.chip:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+/* Input */
+.input-wrap {
+  background: var(--surface); border-top: 1px solid var(--border);
+  padding: 10px 14px; display: flex; gap: 9px;
+  align-items: flex-end; flex-shrink: 0;
+}
+#userInput {
+  flex: 1; background: var(--surface2);
+  border: 1.5px solid var(--border2); color: var(--text);
+  border-radius: 9px; padding: 9px 14px;
+  font-size: 0.87rem; font-family: 'DM Sans', sans-serif;
+  resize: none; min-height: 42px; max-height: 120px;
+  outline: none; line-height: 1.55;
+  transition: border-color 0.2s;
+}
+#userInput::placeholder { color: var(--muted); }
+#userInput:focus { border-color: var(--blue); }
+#sendBtn {
+  width: 42px; height: 42px;
+  background: var(--blue); color: #fff;
+  border: none; border-radius: 9px;
+  font-size: 1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all 0.2s;
+  box-shadow: 0 0 18px rgba(42,127,255,0.4);
+}
+#sendBtn:hover:not(:disabled) { background: var(--blue2); }
+#sendBtn:disabled { opacity: 0.25; cursor: not-allowed; box-shadow: none; }
+.input-hint {
+  font-size: 0.63rem; color: var(--muted);
+  text-align: center; padding: 3px 0 6px;
+  flex-shrink: 0; background: var(--surface);
+  letter-spacing: 0.2px;
+}
+</style>
+</head>
+<body>
+
+<!-- ── GPU ERROR ────────────────────────────────────── -->
+<div class="screen gone" id="gpuError">
+  <div class="err-card">
+    <div class="err-icon">⚡</div>
+    <h2>Browser Update Required</h2>
+    <p>
+      LearnMore runs its AI engine directly in your browser using a technology
+      called WebGPU. Please open this page in <strong>Microsoft Edge</strong> or
+      <strong>Google Chrome</strong> version 113 or newer, then reload.
+    </p>
+    <div class="err-code">Edge or Chrome v113+</div>
+  </div>
+</div>
+
+<!-- ── LOADER ───────────────────────────────────────── -->
+<div class="screen" id="loader">
+  <div class="load-wrap">
+    <div class="load-brand">
+      <img class="projectx-logo" src="assets/projectx-logo.png" alt="ProjectX Web Development"/>
+      <div class="ob-credential">
+        <img class="usted-logo" src="assets/usted-logo.png" alt="USTED"/>
+        <div class="ob-credential-text">Built for<b>USTED Students</b></div>
+      </div>
+    </div>
+    <div class="load-logo">LearnMore</div>
+    <div class="load-pe">Pɛ Adesua &nbsp;·&nbsp; Seek Knowledge</div>
+    <div class="load-status" id="loadStatus">Setting up your learning hub…</div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-pct" id="progressPct">0%</div>
+    <div class="load-note">
+      <b>One-time setup.</b> LearnMore is preparing your learning hub.
+      This happens automatically — you do nothing.
+    </div>
+  </div>
+</div>
+
+<!-- ── ONBOARDING ───────────────────────────────────── -->
+<div class="screen gone" id="onboarding">
+  <div class="ob-card">
+    <div class="ob-logo">LearnMore</div>
+    <div class="ob-pe">Pɛ Adesua &nbsp;·&nbsp; AI Learning Hub</div>
+
+    <div class="ob-field">
+      <label class="ob-label" for="nameInput">Your Name</label>
+      <input class="ob-input" id="nameInput" type="text"
+             placeholder="Enter your full name" autocomplete="off"/>
+    </div>
+
+    <div class="ob-field">
+      <label class="ob-label" for="ageInput">Your Age</label>
+      <input class="ob-input" id="ageInput" type="number" min="5" max="100"
+             placeholder="e.g. 16" autocomplete="off"/>
+    </div>
+
+    <div class="ob-field">
+      <label class="ob-label" for="subjectInput">What do you want to study?</label>
+      <input class="ob-input" id="subjectInput" type="text"
+             placeholder="e.g. Organic Chemistry, Business Law, African History, Python…"
+             autocomplete="off"/>
+      <div class="ob-hint">Any subject. Any course. Any topic. No limits.</div>
+    </div>
+
+    <div class="ob-model-row">
+      <div class="mdot ready" id="mdot"></div>
+      <span id="mdotTxt">AI engine ready</span>
+    </div>
+
+    <button class="ob-start" id="startBtn">Enter Learning Hub &rarr;</button>
+  </div>
+</div>
+
+<!-- ── MAIN APP ──────────────────────────────────────── -->
+<div id="app">
+
+  <div class="header">
+    <div class="h-left">
+      <div class="h-logo">LearnMore</div>
+      <div class="h-pe">Pɛ Adesua</div>
+      <div class="h-sep"></div>
+      <div class="h-name" id="hName"></div>
+    </div>
+    <div class="h-right">
+      <div class="hbadge" id="hLevel"></div>
+      <div class="hbadge" id="hTopic"></div>
+      <button class="h-btn" onclick="resetApp()">Change</button>
+    </div>
+  </div>
+
+  <div class="action-bar">
+    <div class="stats-txt">
+      Exchanges: <b id="exchCount">0</b>
+      &ensp;&middot;&ensp;
+      <span id="quizStatWrap" style="display:none;">
+        Quiz: <b id="quizScoreLabel">0 / 0</b> &ensp;&middot;&ensp;
+      </span>
+      Mode: <b id="modeLabel" style="color:var(--blue)">Study</b>
+    </div>
+    <div class="bar-btns">
+      <button class="bar-btn" onclick="clearChat()">Clear</button>
+      <button class="bar-btn" id="quizBtn" onclick="toggleQuiz()">Start Quiz</button>
+    </div>
+  </div>
+
+  <div id="chat">
+    <div class="welcome-card" id="welcomeCard">
+      <h2 id="wTitle">Welcome to the Hub.</h2>
+      <p id="wDesc"></p>
+      <div class="wc-topic" id="wTopic"></div>
+    </div>
+  </div>
+
+  <div class="chips-bar" id="chipsBar"></div>
+
+  <div class="input-wrap">
+    <textarea id="userInput" placeholder="Ask anything…" rows="1"></textarea>
+    <button id="sendBtn" onclick="sendMessage()">&#8593;</button>
+  </div>
+  <div class="input-hint">Enter = send &nbsp;&middot;&nbsp; Shift + Enter = new line</div>
+
+</div>
+
+<script type="module">
+
+// ── CONFIG ─────────────────────────────────────────────
+const BACKEND_URL = "https://YOUR_DEPLOYED_BACKEND_URL/ask"; // ← replace after Render deploy
+
+// ── STATE ──────────────────────────────────────────────
+let modelReady = true; // always ready — backend is online
+let history    = [];
+let profile    = { name: '', age: '', subject: '' };
+let stats      = { exchanges: 0, qCorrect: 0, qTotal: 0 };
+let quizMode   = false;
+let isRunning  = false;
+const rMap     = {};
+let rId        = 0;
+
+// ── LOADING MESSAGES ───────────────────────────────────
+function friendlyStatus(pct) {
+  if (pct < 5)  return 'Setting up your learning hub…';
+  if (pct < 20) return 'Preparing knowledge base…';
+  if (pct < 45) return 'Loading AI engine…';
+  if (pct < 70) return 'Configuring learning systems…';
+  if (pct < 90) return 'Almost ready…';
+  if (pct < 100) return 'Final preparations…';
+  return 'Ready. Let\'s learn.';
+}
+
+// ── UNIVERSAL CHIPS ────────────────────────────────────
+const CHIPS = [
+  'Explain the basics',
+  'Give me a quiz',
+  'Show a real example',
+  'What should I know first?',
+  'Break it down simply',
+  'Test my understanding',
+  'Summarise what we covered',
+  'Why is this important?'
+];
+
+// ── SCREENS ────────────────────────────────────────────
+function showScreen(id) {
+  ['gpuError','loader','onboarding'].forEach(s => {
+    const el = document.getElementById(s);
+    if (s === id) {
+      el.classList.remove('gone');
+      requestAnimationFrame(() => el.classList.remove('hidden'));
+    } else {
+      el.classList.add('hidden');
+      setTimeout(() => el.classList.add('gone'), 420);
+    }
+  });
+}
+function hideAllScreens() {
+  ['gpuError','loader','onboarding'].forEach(s => {
+    const el = document.getElementById(s);
+    el.classList.add('hidden');
+    setTimeout(() => el.classList.add('gone'), 420);
+  });
+}
+
+// ── LOADING ────────────────────────────────────────────
+function updateProgress(pct) {
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent  = pct + '%';
+  document.getElementById('loadStatus').textContent   = friendlyStatus(pct);
+}
+
+async function loadModel() {
+  // Simulate a quick boot — no model download needed
+  for (let p = 0; p <= 100; p += 20) {
+    updateProgress(p);
+    await new Promise(r => setTimeout(r, 120));
+  }
+  const saved = loadProfile();
+  if (saved && saved.name && saved.age && saved.subject) {
+    profile = saved;
+    document.getElementById('nameInput').value    = profile.name;
+    document.getElementById('ageInput').value     = profile.age;
+    document.getElementById('subjectInput').value = profile.subject;
+    checkObReady();
+  }
+  showScreen('onboarding');
+}
+
+// ── LOCALSTORAGE ───────────────────────────────────────
+function saveProfile() {
+  try { localStorage.setItem('lm_pe', JSON.stringify(profile)); } catch(e) {}
+}
+function loadProfile() {
+  try { const s = localStorage.getItem('lm_pe'); return s ? JSON.parse(s) : null; }
+  catch(e) { return null; }
+}
+
+// ── ONBOARDING ─────────────────────────────────────────
+const nameEl    = document.getElementById('nameInput');
+const ageEl     = document.getElementById('ageInput');
+const subjectEl = document.getElementById('subjectInput');
+const startEl   = document.getElementById('startBtn');
+
+function checkObReady() {
+  const ok = nameEl.value.trim().length > 0
+          && ageEl.value.trim().length > 0
+          && Number(ageEl.value) > 0
+          && subjectEl.value.trim().length > 1
+          && modelReady;
+  startEl.classList.toggle('ready', ok);
+}
+
+nameEl.addEventListener('input', checkObReady);
+ageEl.addEventListener('input', checkObReady);
+subjectEl.addEventListener('input', checkObReady);
+
+startEl.addEventListener('click', () => {
+  profile.name    = nameEl.value.trim();
+  profile.age     = ageEl.value.trim();
+  profile.subject = subjectEl.value.trim();
+  if (!profile.name || !profile.age || !profile.subject || !modelReady) return;
+  saveProfile();
+  hideAllScreens();
+  setTimeout(initApp, 430);
+});
+
+// ── SYSTEM PROMPT ──────────────────────────────────────
+function buildPrompt() {
+  return `You are LearnMore — an AI learning hub built for African students at every level of education. Your tagline is "Pɛ Adesua", which means "Seek Knowledge" in Twi, Ghana.
+
+ABOUT YOU:
+You were created by Makaveli X, whose full name is Prince Osei Owusu — CEO and Lead Developer at ProjectX Web Development, and a BSc Information Technology student at the University of Skills Training and Entrepreneurial Development (USTED), Kumasi, Ghana. He built you to give every African student access to quality, personalised education regardless of internet access, institution, subject, or background.
+When asked who you are, who made you, or about your creator — answer with pride and accuracy using the details above. Never mention any underlying model, AI framework, technology library, or external service. You are LearnMore. That is all.
+
+CURRENT LEARNER:
+Name: ${profile.name} | Age: ${profile.age} | Topic: ${profile.subject}
+
+TEACHING RULES — apply every rule to every response, without exception, every time:
+1. Maximum 5 lines per response. This is a hard limit. Never exceed it under any circumstance.
+2. Teach exactly ONE concept per message. One idea. Not two, not three. One.
+3. Always end your response with one short, direct question to check the learner's understanding.
+4. If the learner answers correctly: confirm in one line, then move forward to the next concept.
+5. If the learner answers incorrectly: correct gently in two lines, then ask the same question again.
+6. Match your language complexity to the learner's age and how they write — younger learners get simple words and more scaffolding, older or advanced learners get precise, technical language. Adjust as the conversation reveals their actual level.
+7. Use Ghanaian or African real-life examples and contexts. Avoid Western or foreign references.
+8. Write like a sharp, patient mentor — never like a textbook, an essay, or a formal report.
+9. No bullet points. No headers. No bold text. Plain, flowing sentences only.
+10. Remember all prior context in this session. Always build on what has already been taught.
+11. Use the learner's first name naturally — once or twice per session, not every message.${quizMode ? '\n\nQUIZ MODE ACTIVE: Ask one quiz question per message on the current topic. After each answer, evaluate in one line only — Correct ✓ or Incorrect ✗, plus a one-line reason. After 5 questions, announce the final score clearly.' : ''}`;
+}
+
+// ── APP INIT ────────────────────────────────────────────
+function initApp() {
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('hName').textContent    = profile.name;
+  document.getElementById('hLevel').textContent   = `Age ${profile.age}`;
+  document.getElementById('hTopic').textContent   = profile.subject;
+  const first = profile.name.split(' ')[0];
+  document.getElementById('wTitle').textContent = `Welcome, ${first}.`;
+  document.getElementById('wDesc').textContent  = `You are in the LearnMore hub. Ask me anything about your topic — I will teach it clearly, adapt to you, and keep every answer sharp and relevant.`;
+  document.getElementById('wTopic').textContent = profile.subject.toUpperCase();
+  buildChips();
+}
+
+// ── CHIPS ───────────────────────────────────────────────
+function buildChips() {
+  document.getElementById('chipsBar').innerHTML = CHIPS.map(c =>
+    `<button class="chip" onclick="useChip('${c.replace(/'/g,"\\'")}')"> ${c}</button>`
+  ).join('');
+}
+window.useChip = t => {
+  document.getElementById('userInput').value = t;
+  sendMessage();
+};
+
+// ── QUIZ ────────────────────────────────────────────────
+window.toggleQuiz = () => {
+  quizMode = !quizMode;
+  const btn = document.getElementById('quizBtn');
+  const sw  = document.getElementById('quizStatWrap');
+  const ml  = document.getElementById('modeLabel');
+  if (quizMode) {
+    btn.textContent  = 'End Quiz'; btn.className = 'bar-btn quiz-on';
+    sw.style.display = 'inline'; ml.textContent = 'Quiz';
+    ml.style.color   = '#22C55E';
+    stats.qCorrect = 0; stats.qTotal = 0;
+    document.getElementById('quizScoreLabel').textContent = '0 / 0';
+    appendSys(`Quiz mode started on: ${profile.subject}`, 'info');
+    document.getElementById('userInput').value = 'Start the quiz on ' + profile.subject;
+    sendMessage();
+  } else {
+    btn.textContent  = 'Start Quiz'; btn.className = 'bar-btn';
+    sw.style.display = 'none'; ml.textContent = 'Study';
+    ml.style.color   = 'var(--blue)';
+    appendSys('Quiz ended. Back to study mode.', 'info');
+  }
+};
+
+// ── DOM HELPERS ─────────────────────────────────────────
+function scrollBottom() {
+  const c = document.getElementById('chat');
+  c.scrollTop = c.scrollHeight;
+}
+function esc(s) {
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function appendSys(text, type) {
+  const el = document.createElement('div');
+  el.className = `sys-msg ${type}`;
+  el.textContent = text;
+  document.getElementById('chat').appendChild(el);
+  scrollBottom();
+}
+function addUserBubble(text) {
+  const d = document.createElement('div');
+  d.className = 'msg user';
+  d.innerHTML = `<div class="msg-role">You</div>
+    <div class="msg-bubble">${esc(text)}</div>`;
+  document.getElementById('chat').appendChild(d);
+  scrollBottom();
+}
+function addTyping() {
+  const d = document.createElement('div');
+  d.className = 'msg ai typing-wrap';
+  d.innerHTML = `<div class="msg-role">LearnMore</div>
+    <div class="typing"><span></span><span></span><span></span></div>`;
+  document.getElementById('chat').appendChild(d);
+  scrollBottom();
+  return d;
+}
+function finalizeAi(el, text) {
+  const id = 'r' + (rId++);
+  rMap[id] = text;
+  el.className = 'msg ai';
+  el.innerHTML = `<div class="msg-role">LearnMore</div>
+    <div class="msg-bubble">${esc(text)}
+      <button class="copy-btn" onclick="doCopy('${id}',this)">Copy</button>
+    </div>`;
+  scrollBottom();
+}
+window.doCopy = (id, btn) => {
+  navigator.clipboard.writeText(rMap[id] || '').then(() => {
+    btn.textContent = 'Copied';
+    setTimeout(() => btn.textContent = 'Copy', 1600);
+  }).catch(() => { btn.textContent = 'Error'; });
+};
+
+function trimHistory() {
+  return history.length <= 40
+    ? history
+    : [...history.slice(0, 4), ...history.slice(-36)];
+}
+
+// ── CLEAR / RESET ───────────────────────────────────────
+window.clearChat = () => {
+  history = []; stats.exchanges = 0;
+  document.getElementById('exchCount').textContent = '0';
+  document.getElementById('chat').innerHTML = `
+    <div class="welcome-card">
+      <h2>Session cleared.</h2>
+      <p>Fresh start. Ask me anything, ${esc(profile.name.split(' ')[0])}.</p>
+      <div class="wc-topic">${esc(profile.subject.toUpperCase())}</div>
+    </div>`;
+  buildChips();
+};
+
+window.resetApp = () => {
+  history = [];
+  stats   = { exchanges: 0, qCorrect: 0, qTotal: 0 };
+  quizMode = false;
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('subjectInput').value = '';
+  profile.subject = '';
+  document.getElementById('nameInput').value = profile.name;
+  document.getElementById('ageInput').value  = profile.age;
+  checkObReady();
+  showScreen('onboarding');
+};
+
+// ── SEND MESSAGE ────────────────────────────────────────
+async function sendMessage() {
+  if (isRunning || !modelReady) return;
+  const ta   = document.getElementById('userInput');
+  const text = ta.value.trim();
+  if (!text) return;
+
+  const wc = document.getElementById('welcomeCard');
+  if (wc) wc.remove();
+
+  addUserBubble(text);
+  ta.value = ''; ta.style.height = 'auto';
+  history.push({ role: 'user', content: text });
+
+  document.getElementById('sendBtn').disabled = true;
+  isRunning = true;
+  const typingEl = addTyping();
+
+  try {
+    const res = await fetch(BACKEND_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: text,
+        history: trimHistory().map(t => ({
+          role: t.role === 'assistant' ? 'assistant' : 'user',
+          text: t.content
+        })),
+        systemPrompt: buildPrompt()
+      })
+    });
+
+    if (!res.ok) throw new Error(`Server error: ${res.status}`);
+    const data = await res.json();
+    const full = data.reply || data.error || 'No response received.';
+
+    finalizeAi(typingEl, full);
+    history.push({ role: 'assistant', content: full });
+    stats.exchanges++;
+    document.getElementById('exchCount').textContent = stats.exchanges;
+
+  } catch(err) {
+    typingEl.remove();
+    appendSys('Could not reach the AI. Check your connection and try again.', 'error');
+    console.error('Send error:', err);
+  }
+
+  isRunning = false;
+  document.getElementById('sendBtn').disabled = false;
+  document.getElementById('userInput').focus();
+}
+
+window.sendMessage = sendMessage;
+
+// ── INPUT ───────────────────────────────────────────────
+const ta = document.getElementById('userInput');
+ta.addEventListener('input', () => {
+  ta.style.height = 'auto';
+  ta.style.height = Math.min(ta.scrollHeight, 120) + 'px';
+});
+ta.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+});
+
+// ── BOOT ────────────────────────────────────────────────
+(async () => {
+  showScreen('loader');
+  await loadModel();
+})();
+
+</script>
+</body>
+</html>
