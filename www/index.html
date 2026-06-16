@@ -3,54 +3,63 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="theme-color" content="#060C18"/>
+<meta name="theme-color" content="#050B15"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="description" content="LearnMore — Pɛ Adesua. AI Learning Hub for African students, powered by ProjectX Web Development."/>
 <title>LearnMore — Pɛ Adesua</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:          #060C18;
-  --surface:     #0A1525;
-  --surface2:    #0E1C32;
-  --surface3:    #132540;
+  --bg:          #050B15;
+  --bg2:         #070E1C;
+  --surface:     #091422;
+  --surface2:    #0C1A2E;
+  --surface3:    #112238;
+  --surface4:    #162B44;
   --blue:        #2A7FFF;
   --blue2:       #1060E8;
-  --blue-dim:    rgba(42,127,255,0.1);
-  --blue-border: rgba(42,127,255,0.28);
-  --blue-glow:   rgba(42,127,255,0.5);
-  --text:        #D8E8F8;
-  --text2:       #8AAAC8;
-  --muted:       #4D6A8A;
-  --border:      #112030;
-  --border2:     #1A2E48;
-  --err-bg:      rgba(220,38,38,0.1);
+  --blue3:       #0A4ABF;
+  --blue-dim:    rgba(42,127,255,0.08);
+  --blue-border: rgba(42,127,255,0.22);
+  --blue-glow:   rgba(42,127,255,0.45);
+  --blue-glow2:  rgba(42,127,255,0.15);
+  --gold:        #C9A84C;
+  --gold-dim:    rgba(201,168,76,0.12);
+  --gold-border: rgba(201,168,76,0.28);
+  --text:        #D4E6F8;
+  --text2:       #7EA8CC;
+  --muted:       #3D5E7A;
+  --border:      #0D1E30;
+  --border2:     #162D46;
+  --err-bg:      rgba(220,38,38,0.08);
   --err-c:       #FCA5A5;
-  --info-bg:     rgba(42,127,255,0.1);
+  --info-bg:     rgba(42,127,255,0.08);
   --info-c:      #93C5FD;
-  --ok-bg:       rgba(34,197,94,0.1);
+  --ok-bg:       rgba(34,197,94,0.08);
   --ok-c:        #86EFAC;
+  --warn-bg:     rgba(201,168,76,0.08);
+  --warn-c:      #C9A84C;
 
-  /* Onboarding-only "electric blue + silver" theme */
-  --ob-bg:        #EEF2F8;
-  --ob-surface:   #FFFFFF;
-  --ob-surface2:  #F4F7FC;
-  --ob-border:    #D7DEEA;
-  --ob-border2:   #C3CEE2;
-  --ob-text:      #1B2540;
-  --ob-text2:     #5A6B8C;
-  --ob-muted:     #97A6C4;
-  --ob-blue:      #2A7FFF;
-  --ob-blue2:     #1060E8;
-  --ob-blue-dim:  rgba(42,127,255,0.08);
-  --ob-blue-border: rgba(42,127,255,0.25);
-  --ob-blue-glow: rgba(42,127,255,0.28);
-  --ob-silver:    #C9D3E4;
+  /* Onboarding theme — light silver/blue */
+  --ob-bg:          #EEF2F8;
+  --ob-surface:     #FFFFFF;
+  --ob-surface2:    #F2F6FC;
+  --ob-border:      #D5DCE8;
+  --ob-border2:     #BFC9D8;
+  --ob-text:        #18243C;
+  --ob-text2:       #52647E;
+  --ob-muted:       #8899B0;
+  --ob-blue:        #2A7FFF;
+  --ob-blue2:       #1060E8;
+  --ob-blue-dim:    rgba(42,127,255,0.07);
+  --ob-blue-border: rgba(42,127,255,0.22);
+  --ob-blue-glow:   rgba(42,127,255,0.22);
+  --ob-silver:      #B8C6D8;
 }
 
 html, body {
@@ -60,7 +69,7 @@ html, body {
   font-size: 15px;
 }
 
-/* ── SCREENS ────────────────────────────────────── */
+/* ── SCREENS ─────────────────────────────────────────── */
 .screen {
   position: fixed; inset: 0;
   display: flex; align-items: center; justify-content: center;
@@ -70,13 +79,11 @@ html, body {
 }
 .screen.hidden { opacity: 0; pointer-events: none; }
 .screen.gone   { display: none !important; }
-
-/* Onboarding screen gets the brighter "electric blue + silver" theme */
 .screen#onboarding {
-  background: linear-gradient(160deg, var(--ob-bg) 0%, #E4EAF4 100%);
+  background: linear-gradient(155deg, var(--ob-bg) 0%, #E2EAF6 100%);
 }
 
-/* ── GPU ERROR ──────────────────────────────────── */
+/* ── GPU ERROR ───────────────────────────────────────── */
 .err-card {
   background: var(--surface);
   border: 1px solid var(--border2);
@@ -97,10 +104,10 @@ html, body {
   display: inline-block; margin-top: 14px;
   background: var(--surface2); border: 1px solid var(--blue-border);
   color: var(--blue); padding: 5px 14px; border-radius: 6px;
-  font-size: 0.82rem; font-family: monospace; letter-spacing: 0.5px;
+  font-size: 0.82rem; font-family: 'Space Mono', monospace; letter-spacing: 0.5px;
 }
 
-/* ── LOADER ─────────────────────────────────────── */
+/* ── LOADER ──────────────────────────────────────────── */
 .load-wrap {
   width: 100%; max-width: 380px;
   display: flex; flex-direction: column;
@@ -108,105 +115,164 @@ html, body {
 }
 .load-brand {
   display: flex; flex-direction: column;
-  align-items: center; margin-bottom: 34px;
+  align-items: center; margin-bottom: 40px; gap: 6px;
 }
-.load-brand img.projectx-logo {
-  height: 88px; width: auto;
-  border-radius: 14px;
-  margin-bottom: 14px;
-  box-shadow: 0 0 36px rgba(42,127,255,0.22);
+.load-px-mark {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem; font-weight: 800;
+  color: var(--blue); letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.7;
 }
-.load-brand .ob-credential {
-  display: flex; align-items: center; gap: 8px;
-  background: var(--surface); border: 1px solid var(--border2);
-  border-radius: 8px; padding: 5px 12px 5px 6px;
-}
-.load-brand img.usted-logo {
-  height: 30px; width: auto;
-  background: #fff; border-radius: 6px;
-  padding: 3px;
-}
-.load-brand .ob-credential-text {
-  font-size: 0.6rem; color: var(--text2);
-  letter-spacing: 0.8px; text-transform: uppercase;
-  font-weight: 600; text-align: left; line-height: 1.5;
-}
-.load-brand .ob-credential-text b {
-  display: block; font-size: 0.66rem; color: var(--text);
-  letter-spacing: 0.4px;
+.load-px-line {
+  width: 32px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  border-radius: 1px;
 }
 .load-logo {
   font-family: 'Syne', sans-serif;
-  font-size: 2.8rem; font-weight: 800;
-  color: var(--blue); letter-spacing: -1px;
+  font-size: 3rem; font-weight: 800;
+  color: var(--blue); letter-spacing: -1.5px;
   margin-bottom: 4px;
-  text-shadow: 0 0 48px var(--blue-glow);
+  text-shadow: 0 0 60px var(--blue-glow);
 }
 .load-pe {
-  font-size: 0.78rem; color: var(--muted);
-  letter-spacing: 3px; text-transform: uppercase;
-  font-weight: 600; margin-bottom: 52px;
+  font-size: 0.72rem; color: var(--muted);
+  letter-spacing: 3.5px; text-transform: uppercase;
+  font-weight: 600; margin-bottom: 56px;
+  font-family: 'Space Mono', monospace;
 }
 .load-status {
-  font-size: 0.8rem; color: var(--text2);
-  font-weight: 500; margin-bottom: 16px;
-  min-height: 20px; letter-spacing: 0.2px;
+  font-size: 0.78rem; color: var(--text2);
+  font-weight: 500; margin-bottom: 18px;
+  min-height: 20px; letter-spacing: 0.3px;
   transition: all 0.4s ease;
 }
 .progress-track {
-  width: 100%; height: 2px;
+  width: 100%; height: 1.5px;
   background: var(--surface3);
-  border-radius: 100px;
-  margin-bottom: 10px;
+  border-radius: 100px; margin-bottom: 10px;
   position: relative; overflow: visible;
 }
 .progress-fill {
   height: 100%; width: 0%;
-  background: var(--blue);
+  background: linear-gradient(90deg, var(--blue3), var(--blue));
   border-radius: 100px;
   transition: width 0.6s ease;
-  box-shadow: 0 0 14px var(--blue-glow), 0 0 28px rgba(42,127,255,0.3);
+  box-shadow: 0 0 18px var(--blue-glow), 0 0 36px rgba(42,127,255,0.2);
 }
 .progress-pct {
-  font-size: 0.7rem; color: var(--muted);
+  font-size: 0.68rem; color: var(--muted);
   margin-bottom: 44px; font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px; font-family: 'Space Mono', monospace;
 }
 .load-note {
   background: var(--surface);
   border: 1px solid var(--border2);
-  border-left: 2px solid var(--blue);
+  border-left: 2px solid var(--gold);
   border-radius: 8px; padding: 14px 16px;
-  font-size: 0.74rem; color: var(--text2);
+  font-size: 0.73rem; color: var(--text2);
   line-height: 1.75; text-align: left; width: 100%;
 }
-.load-note b { color: var(--blue); font-weight: 700; }
+.load-note b { color: var(--gold); font-weight: 700; }
 
-/* ── ONBOARDING ──────────────────────────────────── */
+/* ── USTED SPLASH (cinematic — first-time only) ───────── */
+.screen#ustedSplash {
+  background: linear-gradient(160deg, #1A0010 0%, #2B0018 40%, #3D0020 100%);
+  z-index: 200;
+}
+.usted-splash-wrap {
+  width: 100%; max-width: 400px;
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  padding: 20px;
+}
+.usted-splash-logo {
+  width: 140px; height: auto;
+  margin-bottom: 28px;
+  filter: drop-shadow(0 0 30px rgba(201,168,76,0.5));
+  animation: ustedGlow 3s ease-in-out infinite;
+}
+@keyframes ustedGlow {
+  0%,100% { filter: drop-shadow(0 0 24px rgba(201,168,76,0.4)); }
+  50%      { filter: drop-shadow(0 0 44px rgba(201,168,76,0.7)); }
+}
+.usted-splash-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.68rem; font-weight: 800;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: #C9A84C; margin-bottom: 6px;
+}
+.usted-splash-tagline {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 2px;
+  text-transform: uppercase; color: rgba(201,168,76,0.55);
+  margin-bottom: 32px;
+}
+.usted-splash-divider {
+  width: 40px; height: 1px;
+  background: linear-gradient(90deg, transparent, #C9A84C, transparent);
+  margin: 0 auto 28px;
+}
+.usted-splash-tribute {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem; color: rgba(212,230,248,0.85);
+  line-height: 1.85; max-width: 320px;
+  margin-bottom: 32px;
+}
+.usted-splash-tribute strong { color: #C9A84C; font-weight: 700; }
+.usted-splash-crest {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(201,168,76,0.06);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 10px; padding: 12px 20px;
+  margin-bottom: 36px;
+}
+.usted-splash-crest-line {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem; color: rgba(201,168,76,0.7);
+  letter-spacing: 1.5px; text-transform: uppercase;
+  line-height: 1.6; text-align: left;
+}
+.usted-splash-btn {
+  background: transparent;
+  border: 1px solid rgba(201,168,76,0.4);
+  color: #C9A84C; font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 1px; padding: 11px 32px;
+  border-radius: 8px; cursor: pointer;
+  transition: all 0.25s;
+}
+.usted-splash-btn:hover {
+  background: rgba(201,168,76,0.1);
+  border-color: #C9A84C;
+  box-shadow: 0 0 20px rgba(201,168,76,0.2);
+}
+
+/* ── ONBOARDING ──────────────────────────────────────── */
 .ob-card {
   background: var(--ob-surface);
   border: 1px solid var(--ob-border);
   border-top: 3px solid var(--ob-silver);
-  border-radius: 16px;
-  padding: 40px 34px 32px;
+  border-radius: 18px;
+  padding: 42px 36px 34px;
   width: 100%; max-width: 460px;
-  box-shadow: 0 0 80px rgba(42,127,255,0.07),
-              0 24px 64px rgba(27,37,64,0.10);
+  box-shadow: 0 0 80px rgba(42,127,255,0.06),
+              0 24px 64px rgba(24,36,60,0.10);
 }
 .ob-logo {
   font-family: 'Syne', sans-serif;
-  font-size: 2rem; font-weight: 800;
-  color: var(--ob-blue); letter-spacing: -0.5px;
-  margin-bottom: 2px;
+  font-size: 2.1rem; font-weight: 800;
+  color: var(--ob-blue); letter-spacing: -0.5px; margin-bottom: 2px;
 }
 .ob-pe {
-  font-size: 0.68rem; color: var(--ob-muted);
+  font-size: 0.64rem; color: var(--ob-muted);
   letter-spacing: 2.5px; text-transform: uppercase;
   font-weight: 600; margin-bottom: 30px;
+  font-family: 'Space Mono', monospace;
 }
 .ob-label {
-  display: block;
-  font-size: 0.65rem; font-weight: 700;
+  display: block; font-size: 0.62rem; font-weight: 700;
   letter-spacing: 1.8px; text-transform: uppercase;
   color: var(--ob-muted); margin-bottom: 9px;
 }
@@ -215,21 +281,22 @@ html, body {
   width: 100%; padding: 11px 14px;
   background: var(--ob-surface2);
   border: 1.5px solid var(--ob-border2);
-  border-radius: 8px; font-size: 0.88rem;
+  border-radius: 9px; font-size: 0.88rem;
   font-family: 'DM Sans', sans-serif;
   color: var(--ob-text); outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 .ob-input::placeholder { color: var(--ob-muted); font-style: italic; }
-.ob-input:focus { border-color: var(--ob-blue); }
+.ob-input:focus { border-color: var(--ob-blue); box-shadow: 0 0 0 3px var(--ob-blue-glow); }
 .ob-hint {
-  font-size: 0.7rem; color: var(--ob-muted);
-  margin-top: 6px; line-height: 1.55;
+  font-size: 0.68rem; color: var(--ob-muted);
+  margin-top: 7px; line-height: 1.55;
 }
 .ob-model-row {
   display: flex; align-items: center; gap: 8px;
   font-size: 0.7rem; color: var(--ob-muted);
   margin-bottom: 14px; font-weight: 500;
+  font-family: 'Space Mono', monospace;
 }
 .mdot {
   width: 7px; height: 7px; border-radius: 50%;
@@ -242,59 +309,64 @@ html, body {
 .ob-start {
   width: 100%; padding: 13px; margin-top: 4px;
   background: var(--ob-blue); color: #fff;
-  border: none; border-radius: 8px;
-  font-size: 0.92rem; font-weight: 700;
+  border: none; border-radius: 9px;
+  font-size: 0.9rem; font-weight: 700;
   font-family: 'DM Sans', sans-serif;
-  cursor: pointer; letter-spacing: 0.4px;
+  cursor: pointer; letter-spacing: 0.5px;
   transition: all 0.2s;
   opacity: 0.2; pointer-events: none;
-  box-shadow: 0 0 20px rgba(42,127,255,0);
+  box-shadow: 0 0 0 rgba(42,127,255,0);
 }
 .ob-start.ready {
   opacity: 1; pointer-events: all;
-  box-shadow: 0 0 24px var(--ob-blue-glow);
+  box-shadow: 0 6px 24px var(--ob-blue-glow);
 }
-.ob-start.ready:hover { background: var(--ob-blue2); }
+.ob-start.ready:hover { background: var(--ob-blue2); transform: translateY(-1px); }
 
-
-/* ── APP LAYOUT ──────────────────────────────────── */
-#app { display: none; height: 100vh; flex-direction: column; }
-#app.visible { display: flex; }
+/* ── APP LAYOUT ──────────────────────────────────────── */
+#app { display: none; height: 100dvh; flex-direction: column; }
 
 /* Header */
 .header {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
-  height: 54px; padding: 0 18px;
+  height: 52px; padding: 0 18px;
   display: flex; align-items: center; justify-content: space-between;
-  flex-shrink: 0;
+  flex-shrink: 0; position: relative;
 }
-.h-left { display: flex; align-items: center; gap: 11px; }
+.header::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue-border), transparent);
+}
+.h-left { display: flex; align-items: center; gap: 10px; }
 .h-logo {
   font-family: 'Syne', sans-serif;
-  font-size: 1.15rem; font-weight: 800;
+  font-size: 1.12rem; font-weight: 800;
   color: var(--blue); letter-spacing: -0.2px;
 }
 .h-pe {
-  font-size: 0.62rem; color: var(--muted);
-  letter-spacing: 1.5px; font-weight: 600;
+  font-size: 0.57rem; color: var(--muted);
+  letter-spacing: 1.8px; font-weight: 700;
   text-transform: uppercase;
+  font-family: 'Space Mono', monospace;
 }
-.h-sep { width: 1px; height: 16px; background: var(--border2); }
-.h-name { font-size: 0.8rem; font-weight: 600; color: var(--text); }
-.h-right { display: flex; align-items: center; gap: 7px; }
+.h-sep { width: 1px; height: 14px; background: var(--border2); }
+.h-name { font-size: 0.78rem; font-weight: 600; color: var(--text); }
+.h-right { display: flex; align-items: center; gap: 6px; }
 .hbadge {
   background: var(--surface2); color: var(--blue);
-  font-size: 0.62rem; font-weight: 700;
-  letter-spacing: 0.7px; text-transform: uppercase;
+  font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.6px; text-transform: uppercase;
   padding: 3px 9px; border-radius: 4px;
   border: 1px solid var(--blue-border);
-  max-width: 150px; overflow: hidden;
+  max-width: 140px; overflow: hidden;
   text-overflow: ellipsis; white-space: nowrap;
+  font-family: 'Space Mono', monospace;
 }
 .h-btn {
   background: transparent; border: 1px solid var(--border2);
-  color: var(--muted); font-size: 0.68rem; font-weight: 600;
+  color: var(--muted); font-size: 0.66rem; font-weight: 600;
   padding: 4px 10px; border-radius: 5px;
   cursor: pointer; font-family: 'DM Sans', sans-serif;
   transition: all 0.15s; letter-spacing: 0.3px;
@@ -303,97 +375,185 @@ html, body {
 
 /* Action bar */
 .action-bar {
-  background: var(--surface);
+  background: var(--bg2);
   border-bottom: 1px solid var(--border);
-  padding: 5px 18px;
+  padding: 6px 18px;
   display: flex; align-items: center; justify-content: space-between;
-  flex-shrink: 0; min-height: 34px;
+  flex-shrink: 0; min-height: 36px;
 }
-.stats-txt { font-size: 0.69rem; color: var(--muted); font-weight: 500; }
-.stats-txt b { color: var(--blue); font-weight: 700; }
-.bar-btns { display: flex; gap: 7px; }
+.stats-left { display: flex; align-items: center; gap: 12px; }
+.stat-pill {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.65rem; color: var(--muted); font-weight: 600;
+  font-family: 'Space Mono', monospace; letter-spacing: 0.3px;
+}
+.stat-pill b { color: var(--blue); font-weight: 700; }
+.stat-pill.gold b { color: var(--gold); }
+.stat-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--muted); flex-shrink: 0; }
+.stat-dot.live { background: #22C55E; box-shadow: 0 0 6px rgba(34,197,94,0.7); animation: pulse-dot 2s infinite; }
+@keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.5} }
+.bar-btns { display: flex; gap: 6px; }
 .bar-btn {
   background: var(--surface2); border: 1px solid var(--border2);
-  color: var(--text2); font-size: 0.69rem; font-weight: 600;
-  padding: 4px 11px; border-radius: 5px;
+  color: var(--text2); font-size: 0.65rem; font-weight: 700;
+  padding: 4px 12px; border-radius: 5px;
   cursor: pointer; font-family: 'DM Sans', sans-serif;
   transition: all 0.15s; letter-spacing: 0.3px;
 }
 .bar-btn:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
 .bar-btn.quiz-on { background: #16A34A; color: #fff; border-color: #16A34A; }
+.bar-btn.quiz-on:hover { background: #15803d; border-color: #15803d; }
 
-/* Chat */
+/* ── ROADMAP BAR ─────────────────────────────────────── */
+.roadmap-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 18px;
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0; overflow-x: auto; min-height: 40px;
+}
+.roadmap-bar::-webkit-scrollbar { display: none; }
+.roadmap-label {
+  font-size: 0.58rem; color: var(--muted); font-weight: 700;
+  letter-spacing: 1.8px; text-transform: uppercase;
+  white-space: nowrap; font-family: 'Space Mono', monospace;
+  flex-shrink: 0;
+}
+.roadmap-steps { display: flex; align-items: center; gap: 0; flex: 1; }
+.roadmap-step {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.68rem; color: var(--muted);
+  font-weight: 500; white-space: nowrap;
+  padding: 3px 10px 3px 0;
+  cursor: pointer; transition: color 0.2s; flex-shrink: 0;
+}
+.roadmap-step:hover { color: var(--text2); }
+.roadmap-step.done .step-num  { background: var(--blue); color: #fff; border-color: var(--blue); }
+.roadmap-step.done { color: var(--text2); }
+.roadmap-step.active .step-num { background: var(--gold); color: #050B15; border-color: var(--gold); box-shadow: 0 0 10px rgba(201,168,76,0.5); }
+.roadmap-step.active { color: var(--gold); font-weight: 600; }
+.roadmap-step.weak .step-num { background: transparent; color: #F87171; border-color: rgba(248,113,113,0.5); }
+.roadmap-step.weak { color: #F87171; }
+.step-num {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: transparent; border: 1.5px solid var(--border2);
+  color: var(--muted); font-size: 0.55rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Mono', monospace; flex-shrink: 0;
+  transition: all 0.3s;
+}
+.step-arrow { color: var(--border2); font-size: 0.6rem; margin-right: 10px; flex-shrink: 0; }
+.roadmap-bar.hidden-bar { display: none; }
+.roadmap-loading { display: flex; align-items: center; gap: 8px; }
+.skeleton-step {
+  width: 80px; height: 16px;
+  background: linear-gradient(90deg, var(--surface2) 25%, var(--surface3) 50%, var(--surface2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── CHAT ─────────────────────────────────────────────── */
 #chat {
   flex: 1; overflow-y: auto;
-  padding: 20px 18px;
+  padding: 22px 18px 18px;
   display: flex; flex-direction: column;
-  gap: 15px; scroll-behavior: smooth;
+  gap: 16px; scroll-behavior: smooth;
 }
-#chat::-webkit-scrollbar { width: 3px; }
-#chat::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+#chat::-webkit-scrollbar { width: 2px; }
+#chat::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 #chat::-webkit-scrollbar-track { background: transparent; }
 
-/* Welcome */
+/* Welcome card */
 .welcome-card {
   background: var(--surface);
   border: 1px solid var(--border2);
   border-left: 3px solid var(--blue);
-  border-radius: 12px; padding: 26px 22px;
-  max-width: 430px; margin: 8px auto 0; width: 100%;
+  border-radius: 14px; padding: 26px 24px;
+  max-width: 480px; margin: 6px auto 0; width: 100%;
+  position: relative; overflow: hidden;
+}
+.welcome-card::before {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(42,127,255,0.06) 0%, transparent 70%);
+  pointer-events: none;
 }
 .welcome-card h2 {
   font-family: 'Syne', sans-serif;
-  font-size: 1.2rem; color: var(--text);
-  margin-bottom: 9px; font-weight: 700;
+  font-size: 1.18rem; color: var(--text);
+  margin-bottom: 9px; font-weight: 800;
 }
-.welcome-card p { font-size: 0.82rem; color: var(--text2); line-height: 1.78; }
+.welcome-card p { font-size: 0.82rem; color: var(--text2); line-height: 1.8; }
+.wc-meta { display: flex; align-items: center; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
 .wc-topic {
-  display: inline-block; margin-top: 14px;
+  display: inline-flex; align-items: center; gap: 6px;
   background: var(--blue-dim); border: 1px solid var(--blue-border);
-  color: var(--blue); font-size: 0.65rem; font-weight: 700;
-  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--blue); font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.8px; text-transform: uppercase;
   padding: 4px 10px; border-radius: 4px;
+  font-family: 'Space Mono', monospace;
+}
+.wc-quote {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-left: 2px solid var(--gold);
+  border-radius: 8px; padding: 12px 14px; margin-top: 16px;
+  font-size: 0.78rem; color: var(--text2); line-height: 1.7;
+  font-style: italic;
+}
+.wc-quote cite {
+  display: block; font-style: normal;
+  font-size: 0.62rem; color: var(--gold);
+  margin-top: 7px; letter-spacing: 0.5px;
+  font-family: 'Space Mono', monospace;
 }
 
 /* Messages */
 .msg {
   display: flex; flex-direction: column;
-  max-width: 78%;
+  max-width: 80%;
   animation: fadeUp 0.22s ease;
 }
 @keyframes fadeUp {
-  from { opacity:0; transform:translateY(5px); }
+  from { opacity:0; transform:translateY(6px); }
   to   { opacity:1; transform:translateY(0); }
 }
 .msg.user { align-self: flex-end; align-items: flex-end; }
 .msg.ai   { align-self: flex-start; align-items: flex-start; }
 .msg-role {
-  font-size: 0.59rem; font-weight: 700;
-  letter-spacing: 1.8px; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 4px;
+  font-size: 0.57rem; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 5px;
+  font-family: 'Space Mono', monospace;
 }
 .msg.ai .msg-role { color: var(--blue); }
 .msg-bubble {
-  padding: 11px 15px; border-radius: 11px;
-  font-size: 0.87rem; line-height: 1.78;
+  padding: 12px 16px; border-radius: 12px;
+  font-size: 0.875rem; line-height: 1.82;
   white-space: pre-wrap; word-break: break-word;
   position: relative;
 }
 .msg.user .msg-bubble {
-  background: var(--blue); color: #fff;
-  border-bottom-right-radius: 3px;
-  box-shadow: 0 4px 16px rgba(42,127,255,0.25);
+  background: linear-gradient(135deg, var(--blue2), var(--blue));
+  color: #fff; border-bottom-right-radius: 3px;
+  box-shadow: 0 4px 20px rgba(42,127,255,0.28);
 }
 .msg.ai .msg-bubble {
   background: var(--surface); color: var(--text);
   border: 1px solid var(--border2);
   border-bottom-left-radius: 3px;
-  padding-right: 54px;
+  padding-right: 58px;
 }
 .copy-btn {
-  position: absolute; top: 8px; right: 8px;
+  position: absolute; top: 9px; right: 9px;
   background: var(--surface2); border: 1px solid var(--border2);
-  color: var(--muted); font-size: 0.59rem; font-weight: 700;
+  color: var(--muted); font-size: 0.56rem; font-weight: 700;
   letter-spacing: 0.4px; padding: 2px 7px; border-radius: 4px;
   cursor: pointer; font-family: 'DM Sans', sans-serif;
   opacity: 0; transition: all 0.15s;
@@ -401,130 +561,271 @@ html, body {
 .msg.ai .msg-bubble:hover .copy-btn { opacity: 1; }
 .copy-btn:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
 
-/* Typing */
+/* Concept badge */
+.concept-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--gold-dim); border: 1px solid var(--gold-border);
+  color: var(--gold); font-size: 0.57rem; font-weight: 700;
+  letter-spacing: 0.6px; padding: 2px 8px; border-radius: 3px;
+  margin-bottom: 5px; font-family: 'Space Mono', monospace;
+  text-transform: uppercase;
+}
+
+/* Typing indicator */
 .typing-wrap { align-self: flex-start; }
 .typing {
   display: flex; gap: 5px; align-items: center;
-  padding: 12px 15px;
+  padding: 13px 16px;
   background: var(--surface); border: 1px solid var(--border2);
-  border-radius: 11px; border-bottom-left-radius: 3px;
+  border-radius: 12px; border-bottom-left-radius: 3px;
   width: fit-content;
 }
 .typing span {
-  width: 6px; height: 6px; background: var(--blue);
+  width: 5px; height: 5px; background: var(--blue);
   border-radius: 50%; animation: tdot 1.2s infinite; opacity: 0.25;
 }
 .typing span:nth-child(2) { animation-delay: 0.2s; }
 .typing span:nth-child(3) { animation-delay: 0.4s; }
 @keyframes tdot {
   0%,80%,100% { opacity:0.25; transform:scale(1); }
-  40%          { opacity:1;   transform:scale(1.3); }
+  40%         { opacity:1;   transform:scale(1.3); }
 }
 
 /* System messages */
 .sys-msg {
-  font-size: 0.76rem; padding: 8px 14px;
+  font-size: 0.74rem; padding: 8px 14px;
   border-radius: 7px; align-self: center;
-  text-align: center; max-width: 90%; line-height: 1.6;
+  text-align: center; max-width: 92%; line-height: 1.6;
+  font-family: 'DM Sans', sans-serif;
 }
-.sys-msg.error { background: var(--err-bg); color: var(--err-c); border: 1px solid rgba(220,38,38,0.2); }
-.sys-msg.info  { background: var(--info-bg); color: var(--info-c); border: 1px solid rgba(42,127,255,0.2); }
-.sys-msg.ok    { background: var(--ok-bg); color: var(--ok-c); border: 1px solid rgba(34,197,94,0.2); }
+.sys-msg.error { background: var(--err-bg); color: var(--err-c); border: 1px solid rgba(220,38,38,0.18); }
+.sys-msg.info  { background: var(--info-bg); color: var(--info-c); border: 1px solid rgba(42,127,255,0.18); }
+.sys-msg.ok    { background: var(--ok-bg); color: var(--ok-c); border: 1px solid rgba(34,197,94,0.18); }
+.sys-msg.warn  { background: var(--warn-bg); color: var(--warn-c); border: 1px solid rgba(201,168,76,0.22); }
 
-/* Chips */
+/* Weakness tag */
+.weak-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.22);
+  color: #F87171; font-size: 0.58rem; font-weight: 700;
+  padding: 2px 7px; border-radius: 3px;
+  font-family: 'Space Mono', monospace; letter-spacing: 0.5px;
+}
+
+/* ── CHIPS ───────────────────────────────────────────── */
 .chips-bar {
-  padding: 7px 18px; display: flex; gap: 7px;
+  padding: 8px 18px; display: flex; gap: 7px;
   flex-wrap: nowrap; overflow-x: auto;
   flex-shrink: 0; border-top: 1px solid var(--border);
-  background: var(--bg);
+  background: var(--bg2);
 }
 .chips-bar::-webkit-scrollbar { display: none; }
 .chip {
   background: var(--surface); border: 1px solid var(--border2);
-  color: var(--text2); font-size: 0.71rem; font-weight: 500;
-  font-family: 'DM Sans', sans-serif; padding: 5px 12px;
+  color: var(--text2); font-size: 0.69rem; font-weight: 500;
+  font-family: 'DM Sans', sans-serif; padding: 5px 13px;
   border-radius: 20px; cursor: pointer; white-space: nowrap;
   transition: all 0.15s; flex-shrink: 0;
 }
 .chip:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+.chip.chip-gold { border-color: var(--gold-border); color: var(--gold); }
+.chip.chip-gold:hover { background: var(--gold); color: #050B15; border-color: var(--gold); }
 
-/* Input */
+/* ── INPUT ───────────────────────────────────────────── */
 .input-wrap {
-  background: var(--surface); border-top: 1px solid var(--border);
-  padding: 10px 14px; display: flex; gap: 9px;
-  align-items: flex-end; flex-shrink: 0;
+  display: flex; align-items: flex-end;
+  padding: 10px 18px 8px; gap: 10px;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
 }
-#userInput {
-  flex: 1; background: var(--surface2);
-  border: 1.5px solid var(--border2); color: var(--text);
-  border-radius: 9px; padding: 9px 14px;
-  font-size: 0.87rem; font-family: 'DM Sans', sans-serif;
-  resize: none; min-height: 42px; max-height: 120px;
-  outline: none; line-height: 1.55;
-  transition: border-color 0.2s;
+.input-wrap textarea {
+  flex: 1; background: var(--surface);
+  border: 1.5px solid var(--border2);
+  border-radius: 10px;
+  color: var(--text); font-size: 0.875rem;
+  font-family: 'DM Sans', sans-serif;
+  padding: 10px 14px; resize: none; outline: none;
+  line-height: 1.6; min-height: 42px; max-height: 120px;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-#userInput::placeholder { color: var(--muted); }
-#userInput:focus { border-color: var(--blue); }
-#sendBtn {
-  width: 42px; height: 42px;
-  background: var(--blue); color: #fff;
-  border: none; border-radius: 9px;
-  font-size: 1rem; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; transition: all 0.2s;
-  box-shadow: 0 0 18px rgba(42,127,255,0.4);
+.input-wrap textarea::placeholder { color: var(--muted); }
+.input-wrap textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 2px rgba(42,127,255,0.12);
 }
-#sendBtn:hover:not(:disabled) { background: var(--blue2); }
-#sendBtn:disabled { opacity: 0.25; cursor: not-allowed; box-shadow: none; }
+.input-wrap button {
+  width: 40px; height: 40px; flex-shrink: 0;
+  background: var(--blue); border: none;
+  border-radius: 9px; color: #fff; font-size: 1rem;
+  cursor: pointer; display: flex; align-items: center;
+  justify-content: center; transition: all 0.15s;
+  box-shadow: 0 4px 14px rgba(42,127,255,0.3);
+}
+.input-wrap button:hover:not(:disabled) { background: var(--blue2); transform: translateY(-1px); }
+.input-wrap button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 .input-hint {
-  font-size: 0.63rem; color: var(--muted);
-  text-align: center; padding: 3px 0 6px;
-  flex-shrink: 0; background: var(--surface);
-  letter-spacing: 0.2px;
+  text-align: center; font-size: 0.6rem;
+  color: var(--muted); padding: 0 18px 7px;
+  background: var(--bg2); flex-shrink: 0;
+  font-family: 'Space Mono', monospace; letter-spacing: 0.3px;
 }
+
+/* ── FOOTER ──────────────────────────────────────────── */
+.app-footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 6px 18px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; flex-shrink: 0;
+}
+.footer-txt {
+  font-size: 0.57rem; color: var(--muted);
+  letter-spacing: 1.5px; text-transform: uppercase;
+  font-family: 'Space Mono', monospace; font-weight: 700;
+}
+.footer-dot { color: var(--border2); font-size: 0.5rem; }
+.footer-brand {
+  font-size: 0.57rem; color: var(--blue);
+  letter-spacing: 1.5px; text-transform: uppercase;
+  font-family: 'Space Mono', monospace; font-weight: 700;
+}
+
+/* ── PROJECTX SPLASH ─────────────────────────────────── */
+.screen#pxSplash {
+  background: #050B15;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+}
+.px-splash-wrap {
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  max-width: 360px; width: 100%;
+}
+.px-splash-logo {
+  width: 120px; height: 120px; object-fit: contain;
+  border-radius: 18px; margin-bottom: 24px;
+  box-shadow: 0 0 60px rgba(42,127,255,0.35),
+              0 0 120px rgba(42,127,255,0.12);
+}
+.px-splash-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.3rem; font-weight: 800;
+  color: #fff; letter-spacing: 3px;
+  text-transform: uppercase; margin-bottom: 2px;
+}
+.px-splash-sub {
+  font-size: 0.58rem; color: var(--blue);
+  letter-spacing: 3px; text-transform: uppercase;
+  font-weight: 600; margin-bottom: 28px;
+  font-family: 'Space Mono', monospace;
+}
+.px-splash-divider {
+  width: 40px; height: 2px;
+  background: linear-gradient(90deg, var(--blue2), var(--blue), #60A5FA);
+  border-radius: 1px; margin: 0 auto 28px;
+}
+.px-splash-quote {
+  font-size: 0.83rem; color: var(--text2);
+  line-height: 1.85; font-style: italic;
+  margin-bottom: 8px; min-height: 60px;
+  padding: 0 8px;
+}
+.px-splash-cite {
+  font-size: 0.6rem; color: var(--blue);
+  letter-spacing: 1.5px; text-transform: uppercase;
+  font-family: 'Space Mono', monospace;
+  font-style: normal; margin-bottom: 36px;
+}
+.px-splash-btn {
+  background: transparent;
+  border: 1.5px solid var(--blue-border);
+  color: var(--blue); border-radius: 8px;
+  padding: 11px 32px; font-size: 0.82rem;
+  font-family: 'DM Sans', sans-serif; font-weight: 700;
+  letter-spacing: 0.5px; cursor: pointer;
+  transition: all 0.2s;
+}
+.px-splash-btn:hover {
+  background: var(--blue); color: #fff;
+  border-color: var(--blue);
+  box-shadow: 0 0 24px var(--blue-glow2);
+}
+
 </style>
 </head>
 <body>
 
-<!-- ── GPU ERROR ────────────────────────────────────── -->
-<div class="screen gone" id="gpuError">
-  <div class="err-card">
-    <div class="err-icon">⚡</div>
-    <h2>Browser Update Required</h2>
-    <p>
-      LearnMore runs its AI engine directly in your browser using a technology
-      called WebGPU. Please open this page in <strong>Microsoft Edge</strong> or
-      <strong>Google Chrome</strong> version 113 or newer, then reload.
+<!-- ── USTED CINEMATIC SPLASH (first-time only) ─────── -->
+<div class="screen gone" id="ustedSplash">
+  <div class="usted-splash-wrap">
+    <img src="assets/usted-logo.png" class="usted-splash-logo" alt="USTED"/>
+    <div class="usted-splash-name">University of Skills Training<br>and Entrepreneurial Development</div>
+    <div class="usted-splash-tagline">Kumasi, Ghana &nbsp;·&nbsp; Est. 2013</div>
+    <div class="usted-splash-divider"></div>
+    <p class="usted-splash-tribute">
+      LearnMore was conceived and built within these walls.<br><br>
+      <strong>USTED</strong> is not just the institution of origin —
+      it is the foundation of everything this platform stands for:
+      that knowledge belongs to everyone, and that African students
+      deserve tools built by people who understand them.
     </p>
-    <div class="err-code">Edge or Chrome v113+</div>
+    <div class="usted-splash-crest">
+      <div class="usted-splash-crest-line">
+        Nimdee Ne Nsaanonnwuma<br>
+        Suakyerɛ Ma Mpontuo
+      </div>
+    </div>
+    <button class="usted-splash-btn" onclick="proceedFromUsted()">Enter the Hub &rarr;</button>
   </div>
 </div>
 
-<!-- ── LOADER ───────────────────────────────────────── -->
+<!-- ── PROJECTX SPLASH (every visit, after USTED) ────── -->
+<div class="screen gone" id="pxSplash">
+  <div class="px-splash-wrap">
+    <img class="px-splash-logo" src="assets/projectx-logo.png" alt="ProjectX Web Development"/>
+    <div class="px-splash-name">ProjectX</div>
+    <div class="px-splash-sub">Web Development</div>
+    <div class="px-splash-divider"></div>
+    <div class="px-splash-quote" id="pxQuote"></div>
+    <div class="px-splash-cite" id="pxCite"></div>
+    <button class="px-splash-btn" onclick="proceedFromPX()">Enter LearnMore &rarr;</button>
+  </div>
+</div>
+
+<!-- ── GPU ERROR ─────────────────────────────────────── -->
+<div class="screen gone" id="gpuError">
+  <div class="err-card">
+    <div class="err-icon">⚡</div>
+    <h2>Connection Required</h2>
+    <p>LearnMore needs an internet connection to reach the AI learning engine. Please check your connection and refresh.</p>
+    <span class="err-code">ERR_BACKEND_OFFLINE</span>
+  </div>
+</div>
+
+<!-- ── LOADER ────────────────────────────────────────── -->
 <div class="screen" id="loader">
   <div class="load-wrap">
     <div class="load-brand">
-      <img class="projectx-logo" src="assets/projectx-logo.png" alt="ProjectX Web Development"/>
-      <div class="ob-credential">
-        <img class="usted-logo" src="assets/usted-logo.png" alt="USTED"/>
-        <div class="ob-credential-text">Built for<b>USTED Students</b></div>
-      </div>
+      <div class="load-px-mark">ProjectX</div>
+      <div class="load-px-line"></div>
     </div>
     <div class="load-logo">LearnMore</div>
     <div class="load-pe">Pɛ Adesua &nbsp;·&nbsp; Seek Knowledge</div>
-    <div class="load-status" id="loadStatus">Setting up your learning hub…</div>
+    <div class="load-status" id="loadStatus">Initialising your learning hub…</div>
     <div class="progress-track">
       <div class="progress-fill" id="progressFill"></div>
     </div>
     <div class="progress-pct" id="progressPct">0%</div>
     <div class="load-note">
-      <b>One-time setup.</b> LearnMore is preparing your learning hub.
-      This happens automatically — you do nothing.
+      <b>One-time setup.</b> LearnMore is preparing your personalised learning environment.
     </div>
   </div>
 </div>
 
-<!-- ── ONBOARDING ───────────────────────────────────── -->
+<!-- ── ONBOARDING ────────────────────────────────────── -->
 <div class="screen gone" id="onboarding">
   <div class="ob-card">
     <div class="ob-logo">LearnMore</div>
@@ -532,16 +833,12 @@ html, body {
 
     <div class="ob-field">
       <label class="ob-label" for="nameInput">Your Name</label>
-      <input class="ob-input" id="nameInput" type="text"
-             placeholder="Enter your full name" autocomplete="off"/>
+      <input class="ob-input" id="nameInput" type="text" placeholder="Enter your full name" autocomplete="off"/>
     </div>
-
     <div class="ob-field">
       <label class="ob-label" for="ageInput">Your Age</label>
-      <input class="ob-input" id="ageInput" type="number" min="5" max="100"
-             placeholder="e.g. 16" autocomplete="off"/>
+      <input class="ob-input" id="ageInput" type="number" min="5" max="100" placeholder="e.g. 20" autocomplete="off"/>
     </div>
-
     <div class="ob-field">
       <label class="ob-label" for="subjectInput">What do you want to study?</label>
       <input class="ob-input" id="subjectInput" type="text"
@@ -551,10 +848,9 @@ html, body {
     </div>
 
     <div class="ob-model-row">
-      <div class="mdot ready" id="mdot"></div>
-      <span id="mdotTxt">AI engine ready</span>
+      <div class="mdot loading" id="mdot"></div>
+      <span id="mdotTxt">Checking AI connection…</span>
     </div>
-
     <button class="ob-start" id="startBtn">Enter Learning Hub &rarr;</button>
   </div>
 </div>
@@ -577,17 +873,36 @@ html, body {
   </div>
 
   <div class="action-bar">
-    <div class="stats-txt">
-      Exchanges: <b id="exchCount">0</b>
-      &ensp;&middot;&ensp;
-      <span id="quizStatWrap" style="display:none;">
-        Quiz: <b id="quizScoreLabel">0 / 0</b> &ensp;&middot;&ensp;
-      </span>
-      Mode: <b id="modeLabel" style="color:var(--blue)">Study</b>
+    <div class="stats-left">
+      <div class="stat-pill">
+        <div class="stat-dot live"></div>
+        Exchanges: <b id="exchCount">0</b>
+      </div>
+      <div class="stat-pill" id="quizStatWrap" style="display:none;">
+        Quiz: <b id="quizScoreLabel">0 / 0</b>
+      </div>
+      <div class="stat-pill gold" id="weakStatWrap" style="display:none;">
+        Revisit: <b id="weakCount">0</b>
+      </div>
+      <div class="stat-pill">
+        Mode: <b id="modeLabel" style="color:var(--blue)">Study</b>
+      </div>
     </div>
     <div class="bar-btns">
       <button class="bar-btn" onclick="clearChat()">Clear</button>
-      <button class="bar-btn" id="quizBtn" onclick="toggleQuiz()">Start Quiz</button>
+      <button class="bar-btn" id="quizBtn" onclick="toggleQuiz()">Quiz Mode</button>
+    </div>
+  </div>
+
+  <!-- Roadmap bar -->
+  <div class="roadmap-bar hidden-bar" id="roadmapBar">
+    <div class="roadmap-label">PATH</div>
+    <div class="roadmap-steps" id="roadmapSteps">
+      <div class="roadmap-loading">
+        <div class="skeleton-step"></div>
+        <div class="skeleton-step"></div>
+        <div class="skeleton-step"></div>
+      </div>
     </div>
   </div>
 
@@ -595,7 +910,9 @@ html, body {
     <div class="welcome-card" id="welcomeCard">
       <h2 id="wTitle">Welcome to the Hub.</h2>
       <p id="wDesc"></p>
-      <div class="wc-topic" id="wTopic"></div>
+      <div class="wc-meta">
+        <div class="wc-topic" id="wTopic"></div>
+      </div>
     </div>
   </div>
 
@@ -605,52 +922,75 @@ html, body {
     <textarea id="userInput" placeholder="Ask anything…" rows="1"></textarea>
     <button id="sendBtn" onclick="sendMessage()">&#8593;</button>
   </div>
-  <div class="input-hint">Enter = send &nbsp;&middot;&nbsp; Shift + Enter = new line</div>
+  <div class="input-hint">Enter = send &nbsp;·&nbsp; Shift + Enter = new line</div>
+
+  <div class="app-footer">
+    <span class="footer-txt">LearnMore · Pɛ Adesua</span>
+    <span class="footer-dot">●</span>
+    <img src="assets/projectx-logo.png" alt="ProjectX Web Development" style="height:14px;width:auto;opacity:0.5;vertical-align:middle;border-radius:3px;"/>
+  </div>
 
 </div>
 
 <script type="module">
 
 // ── CONFIG ─────────────────────────────────────────────
-const BACKEND_URL = "https://YOUR_DEPLOYED_BACKEND_URL/ask"; // ← replace after Render deploy
+const BACKEND_URL = "https://peadesua-backend.onrender.com/ask";
 
 // ── STATE ──────────────────────────────────────────────
-let modelReady = true; // always ready — backend is online
-let history    = [];
-let profile    = { name: '', age: '', subject: '' };
-let stats      = { exchanges: 0, qCorrect: 0, qTotal: 0 };
-let quizMode   = false;
-let isRunning  = false;
-const rMap     = {};
-let rId        = 0;
+let modelReady  = true;
+let history     = [];
+let profile     = { name: '', age: '', subject: '' };
+let stats       = { exchanges: 0, qCorrect: 0, qTotal: 0 };
+let quizMode    = false;
+let isRunning   = false;
+let roadmap     = [];
+let currentStep = 0;
+let weaknesses  = {};
+let lastCorrect = null;
+const rMap      = {};
+let rId         = 0;
 
-// ── LOADING MESSAGES ───────────────────────────────────
-function friendlyStatus(pct) {
-  if (pct < 5)  return 'Setting up your learning hub…';
-  if (pct < 20) return 'Preparing knowledge base…';
-  if (pct < 45) return 'Loading AI engine…';
-  if (pct < 70) return 'Configuring learning systems…';
-  if (pct < 90) return 'Almost ready…';
-  if (pct < 100) return 'Final preparations…';
-  return 'Ready. Let\'s learn.';
+
+// ── IDENTITY CONTEXT ───────────────────────────────────
+const IDENTITY_CONTEXT = `
+IDENTITY OF YOUR CREATOR — use ONLY when directly and specifically asked:
+
+Makaveli X (legal name: Prince Osei Owusu) is a writer, strategist, entrepreneur, and self-taught developer based in Ghana. He is the CEO and Lead Developer of ProjectX Web Development — a student-run technology agency at USTED, Kumasi, Ghana. The core team is: Bright Nkrumah Asamoah (CTO), Kenneth Kwarteng / Don Carlio (Head of Design), Juliana Venunye (Backend Lead), and Felix Mensah (Head of Growth). ProjectX is building towards becoming Ghana's leading tech and robotics agency.
+
+He practises what he calls "Building with AI" — the art of commanding AI with precision, strategy, and deep understanding of output. He calls this the gateway to the 5th Generational Era. He has introduced this as a course and a creative discipline.
+
+He is the author of "Reputation: The Foundation of Power" and "The Art of Modern Warfare" — works of strategic philosophy rooted in lived experience, African history, and the traditions of Machiavelli, Sun Tzu, and Robert Greene.
+
+He co-founded theX Fashions (fashion brand, Don Carlio as Director — thexfashions.netlify.app), M-JAY AFRIQUE (African luxury tie-and-dye clothing, Ashanti-rooted — m-jayafrique.netlify.app), and XBLOC Records (record label, managed with Don Carlio and Gullyboi).
+
+Author profile: makaveli.netlify.app
+
+CRITICAL: Never speak everything about Makaveli X or his projects at once. Never mention any of these details unless the user explicitly asks about Makaveli X, ProjectX, XBLOC Records, theX Fashions, M-JAY AFRIQUE, the Art of Prompting, or his books. Never frame this as bragging or self-promotion. State it as fact, plainly.
+`;
+
+// ── LOADING STATUS MESSAGES ────────────────────────────
+function friendlyStatus(pct, isWakingUp) {
+  if (isWakingUp) {
+    if (pct < 40)  return 'Waking up the AI engine\u2026 (first load may take ~30s)';
+    if (pct < 70)  return 'AI is starting up \u2014 hold on\u2026';
+    if (pct < 95)  return 'Connecting to learning engine\u2026';
+    return 'Almost live\u2026';
+  }
+  if (pct < 10)  return 'Initialising your learning hub\u2026';
+  if (pct < 30)  return 'Preparing knowledge systems\u2026';
+  if (pct < 55)  return 'Calibrating AI engine\u2026';
+  if (pct < 78)  return 'Configuring learning protocols\u2026';
+  if (pct < 95)  return 'Almost ready\u2026';
+  if (pct < 100) return 'Final preparation\u2026';
+  return 'Ready. The hub is live.';
 }
-
-// ── UNIVERSAL CHIPS ────────────────────────────────────
-const CHIPS = [
-  'Explain the basics',
-  'Give me a quiz',
-  'Show a real example',
-  'What should I know first?',
-  'Break it down simply',
-  'Test my understanding',
-  'Summarise what we covered',
-  'Why is this important?'
-];
 
 // ── SCREENS ────────────────────────────────────────────
 function showScreen(id) {
-  ['gpuError','loader','onboarding'].forEach(s => {
+  ['gpuError', 'loader', 'ustedSplash', 'pxSplash', 'onboarding'].forEach(s => {
     const el = document.getElementById(s);
+    if (!el) return;
     if (s === id) {
       el.classList.remove('gone');
       requestAnimationFrame(() => el.classList.remove('hidden'));
@@ -661,26 +1001,107 @@ function showScreen(id) {
   });
 }
 function hideAllScreens() {
-  ['gpuError','loader','onboarding'].forEach(s => {
+  ['gpuError', 'loader', 'ustedSplash', 'pxSplash', 'onboarding'].forEach(s => {
     const el = document.getElementById(s);
+    if (!el) return;
     el.classList.add('hidden');
     setTimeout(() => el.classList.add('gone'), 420);
   });
 }
 
+// USTED splash button
+// ── MAKAVELI X QUOTES (ProjectX splash only) ──────────
+const LAWS = [
+  { text: "The man who plants in silence harvests in thunder.", cite: "Makaveli X — Reputation" },
+  { text: "Power does not go to the man who chases it. It settles on the man who has made himself the only place it can land.", cite: "Makaveli X — Reputation" },
+  { text: "Reputation built in comfort is a story. Reputation built in adversity is evidence. Evidence cannot be argued with.", cite: "Makaveli X — Reputation" },
+  { text: "The world decides what you are worth before you speak. Make sure it decides correctly.", cite: "Makaveli X — Reputation" },
+  { text: "Your reputation is the only asset that works for you while you sleep, speaks for you while absent, and defends you under attack.", cite: "Makaveli X — Reputation" },
+  { text: "A man's values are not what he believes when life is comfortable. They are what he does when comfort is gone.", cite: "Makaveli X — Reputation" },
+  { text: "The warrior who fought naively is already a body on the battlefield.", cite: "Makaveli X — The Art of Modern Warfare" },
+  { text: "The nation that controls what others need cannot be destroyed. The man who makes himself indispensable cannot be discarded.", cite: "Makaveli X — The Art of Modern Warfare" },
+  { text: "Information is the first weapon. Before a single shot is fired, the side with clearer intelligence has already won half the battle.", cite: "Makaveli X — The Art of Modern Warfare" },
+  { text: "Discipline is not what you do under observation. It is what you do when no one is watching and nothing is forcing you.", cite: "Makaveli X — Reputation" },
+];
+
+window.proceedFromUsted = () => {
+  localStorage.setItem('lm_tribute_seen', '1');
+  // Show ProjectX splash after USTED
+  const law = LAWS[Math.floor(Math.random() * LAWS.length)];
+  document.getElementById('pxQuote').textContent = `"${law.text}"`;
+  document.getElementById('pxCite').textContent  = law.cite;
+  showScreen('pxSplash');
+};
+
+window.proceedFromPX = () => {
+  showScreen('onboarding');
+};
+
 // ── LOADING ────────────────────────────────────────────
-function updateProgress(pct) {
+function updateProgress(pct, isWakingUp) {
   document.getElementById('progressFill').style.width = pct + '%';
   document.getElementById('progressPct').textContent  = pct + '%';
-  document.getElementById('loadStatus').textContent   = friendlyStatus(pct);
+  document.getElementById('loadStatus').textContent   = friendlyStatus(pct, isWakingUp);
+}
+
+// Ping backend to wake Render from cold-start; resolves true if alive, false if slow/down
+async function pingBackend() {
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 12000); // 12s timeout
+    const res = await fetch(BACKEND_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'ping', history: [], systemPrompt: 'Reply with the single word: pong' }),
+      signal: ctrl.signal
+    });
+    clearTimeout(timer);
+    return res.ok;
+  } catch(e) { return false; }
 }
 
 async function loadModel() {
-  // Simulate a quick boot — no model download needed
-  for (let p = 0; p <= 100; p += 20) {
-    updateProgress(p);
-    await new Promise(r => setTimeout(r, 120));
+  // Fire backend ping immediately so Render wakes in parallel with the UI animation
+  const pingPromise = pingBackend();
+
+  // Fast animation to 80%
+  for (let p = 0; p <= 80; p += 10) {
+    updateProgress(p, false);
+    await new Promise(r => setTimeout(r, 90));
   }
+
+  // Hold at 80% while waiting for backend to respond
+  const backendAlive = await Promise.race([
+    pingPromise.then(ok => ok),
+    new Promise(r => setTimeout(() => r(false), 30000)) // 30s hard cap
+  ]);
+
+  // If backend took a while, show the wake-up message during the wait
+  if (!backendAlive) {
+    for (let p = 80; p <= 95; p += 5) {
+      updateProgress(p, true);
+      await new Promise(r => setTimeout(r, 600));
+    }
+  }
+
+  // Complete to 100%
+  for (let p = 81; p <= 100; p += 5) {
+    updateProgress(p, false);
+    await new Promise(r => setTimeout(r, 60));
+  }
+
+  // Always show AI status but never block the user
+  const mdot    = document.getElementById('mdot');
+  const mdotTxt = document.getElementById('mdotTxt');
+  if (backendAlive) {
+    mdot.className    = 'mdot ready';
+    mdotTxt.textContent = 'Pɛ Adesua AI is ready';
+  } else {
+    mdot.className    = 'mdot err';
+    mdotTxt.textContent = 'Slow connection — you can still enter';
+    // Never block entry — modelReady stays true
+  }
+
   const saved = loadProfile();
   if (saved && saved.name && saved.age && saved.subject) {
     profile = saved;
@@ -689,15 +1110,27 @@ async function loadModel() {
     document.getElementById('subjectInput').value = profile.subject;
     checkObReady();
   }
-  showScreen('onboarding');
+
+  // First-time: USTED splash → PX splash → onboarding
+  // Returning: PX splash → onboarding (every visit)
+  const tributeSeen = localStorage.getItem('lm_tribute_seen');
+  if (!tributeSeen) {
+    showScreen('ustedSplash');
+  } else {
+    // ProjectX splash every visit with a fresh quote
+    const law = LAWS[Math.floor(Math.random() * LAWS.length)];
+    document.getElementById('pxQuote').textContent = `"${law.text}"`;
+    document.getElementById('pxCite').textContent  = law.cite;
+    showScreen('pxSplash');
+  }
 }
 
 // ── LOCALSTORAGE ───────────────────────────────────────
 function saveProfile() {
-  try { localStorage.setItem('lm_pe', JSON.stringify(profile)); } catch(e) {}
+  try { localStorage.setItem('lm_pe_v2', JSON.stringify(profile)); } catch(e) {}
 }
 function loadProfile() {
-  try { const s = localStorage.getItem('lm_pe'); return s ? JSON.parse(s) : null; }
+  try { const s = localStorage.getItem('lm_pe_v2'); return s ? JSON.parse(s) : null; }
   catch(e) { return null; }
 }
 
@@ -711,11 +1144,9 @@ function checkObReady() {
   const ok = nameEl.value.trim().length > 0
           && ageEl.value.trim().length > 0
           && Number(ageEl.value) > 0
-          && subjectEl.value.trim().length > 1
-          && modelReady;
+          && subjectEl.value.trim().length > 1;
   startEl.classList.toggle('ready', ok);
 }
-
 nameEl.addEventListener('input', checkObReady);
 ageEl.addEventListener('input', checkObReady);
 subjectEl.addEventListener('input', checkObReady);
@@ -724,7 +1155,7 @@ startEl.addEventListener('click', () => {
   profile.name    = nameEl.value.trim();
   profile.age     = ageEl.value.trim();
   profile.subject = subjectEl.value.trim();
-  if (!profile.name || !profile.age || !profile.subject || !modelReady) return;
+  if (!profile.name || !profile.age || !profile.subject) return;
   saveProfile();
   hideAllScreens();
   setTimeout(initApp, 430);
@@ -732,46 +1163,212 @@ startEl.addEventListener('click', () => {
 
 // ── SYSTEM PROMPT ──────────────────────────────────────
 function buildPrompt() {
-  return `You are LearnMore — an AI learning hub built for African students at every level of education. Your tagline is "Pɛ Adesua", which means "Seek Knowledge" in Twi, Ghana.
+  const roadmapContext = roadmap.length > 0
+    ? `\n\nLEARNING ROADMAP (generated for this session):\n` +
+      roadmap.map((s, i) =>
+        `${i+1}. ${s.title}` +
+        (i === currentStep ? ' ← CURRENT CONCEPT' : s.done ? ' (completed)' : '') +
+        (weaknesses[i] ? ` (learner struggled here — ${weaknesses[i]} miss${weaknesses[i]>1?'es':''})` : '')
+      ).join('\n') +
+      `\nAlways build teaching around the current concept unless the learner asks about something else.`
+    : '';
 
-ABOUT YOU:
-You were created by Makaveli X, whose full name is Prince Osei Owusu — CEO and Lead Developer at ProjectX Web Development, and a BSc Information Technology student at the University of Skills Training and Entrepreneurial Development (USTED), Kumasi, Ghana. He built you to give every African student access to quality, personalised education regardless of internet access, institution, subject, or background.
-When asked who you are, who made you, or about your creator — answer with pride and accuracy using the details above. Never mention any underlying model, AI framework, technology library, or external service. You are LearnMore. That is all.
+  const weaknessContext = Object.keys(weaknesses).length > 0
+    ? `\n\nWEAKNESS TRACKER: The learner has struggled with: ` +
+      Object.entries(weaknesses).map(([i,c]) =>
+        `"${roadmap[i]?.title || 'step '+(+i+1)}" (${c} miss${c>1?'es':''})`
+      ).join(', ') + `. Revisit these before advancing.`
+    : '';
+
+  return `You are LearnMore — Pɛ Adesua. An AI learning hub built specifically for African students. "Pɛ Adesua" means "Seek Knowledge" in Twi, Ghana. You are not a chatbot. You are a mentor, a tutor, and an intellectual companion. Speak boldly and confidently.
+
+IDENTITY:
+You were built by Makaveli X — Prince Osei Owusu — CEO and Lead Developer of ProjectX Web Development, BSc IT student at USTED (University of Skills Training and Entrepreneurial Development), Kumasi, Ghana. He built you so that every African student has access to serious, high-quality education regardless of their subject, background, or institution.
+
+When asked directly who built you, who you are, or your creator — answer with precision and pride. Never mention any underlying AI model, framework, or third-party service. You are LearnMore. That is the complete answer. Never talk about yourself or Makaveli in one full answer, leave holes to invite questions.
+
+${IDENTITY_CONTEXT}
 
 CURRENT LEARNER:
 Name: ${profile.name} | Age: ${profile.age} | Topic: ${profile.subject}
+${roadmapContext}${weaknessContext}
 
-TEACHING RULES — apply every rule to every response, without exception, every time:
-1. Maximum 5 lines per response. This is a hard limit. Never exceed it under any circumstance.
-2. Teach exactly ONE concept per message. One idea. Not two, not three. One.
-3. Always end your response with one short, direct question to check the learner's understanding.
-4. If the learner answers correctly: confirm in one line, then move forward to the next concept.
-5. If the learner answers incorrectly: correct gently in two lines, then ask the same question again.
-6. Match your language complexity to the learner's age and how they write — younger learners get simple words and more scaffolding, older or advanced learners get precise, technical language. Adjust as the conversation reveals their actual level.
-7. Use Ghanaian or African real-life examples and contexts. Avoid Western or foreign references.
-8. Write like a sharp, patient mentor — never like a textbook, an essay, or a formal report.
-9. No bullet points. No headers. No bold text. Plain, flowing sentences only.
-10. Remember all prior context in this session. Always build on what has already been taught.
-11. Use the learner's first name naturally — once or twice per session, not every message.${quizMode ? '\n\nQUIZ MODE ACTIVE: Ask one quiz question per message on the current topic. After each answer, evaluate in one line only — Correct ✓ or Incorrect ✗, plus a one-line reason. After 5 questions, announce the final score clearly.' : ''}`;
+TONE — non-negotiable, every response: for every first response, make it a maximum of 3 lines.
+Cold. Precise. Knowledgeable. Polite. Respectful.
+No filler. No "Great question!" No "I'd be happy to help." No performative warmth.
+Get straight into the substance. Be the sharpest mind in the room — but never arrogant, never condescending.
+Treat the learner as capable. Correct mistakes directly. Never soften a wrong answer into something that sounds half-right.
+Never repeat back what the student just said before answering. It wastes their time.
+Think surgeon, not cheerleader. Confidence is communicated through clarity, not enthusiasm.
+
+SUBJECT-ADAPTIVE FORMAT — critical. Detect the kind of subject and format accordingly. Never apply a one-size-fits-all style:
+
+MATHEMATICS / PHYSICS / CHEMISTRY (calculation-based):
+— Show working in clear, numbered steps. No arbitrary line limit — a solution takes as many steps as it requires.
+— State what each step is doing before doing it.
+— State the final answer clearly and separately at the end.
+— Ask one short comprehension question only when it genuinely helps — not mechanically after every response.
+
+CODING / PROGRAMMING:
+— Teach in structured steps. Use code blocks where needed.
+— Explain what the code does line by line when introducing a new concept.
+— Build incrementally — do not dump an entire solution unless asked.
+— For debugging: identify the exact error first, explain WHY it happens, then show the fix.
+— Never over-explain what the student already demonstrated they know.
+
+SCIENCE (biology, chemistry concepts, physics theory):
+— Concise explanation of the concept, then one strong real-world or African example.
+— Check for understanding with one targeted question when appropriate.
+— Never over-explain what the student already demonstrated they know.
+
+HISTORY / SOCIAL STUDIES / ECONOMICS:
+— Flowing prose. Narrative style. Context-rich.
+— Connect events to causes, consequences, and patterns — not just dates and names.
+— Draw African and Ghanaian historical examples where relevant and accurate.
+— No bullet points. No fragmented lists. Write like a historian who can also teach.
+
+ESSAYS / ENGLISH / LITERATURE / WRITING:
+— Respond in essay form when teaching essay structure or analysis.
+— When reviewing the student's own writing: identify the strongest point first, then the most important thing to fix, then how to fix it. Be precise.
+— Teach writing by showing, not just telling — demonstrate the difference between weak and strong writing with examples.
+
+LANGUAGES (French, Twi, Arabic, etc.):
+— Pattern first. Example second. Practice third.
+— Always show pronunciation or tone guides where relevant.
+— Correct errors immediately and specifically.
+
+PHILOSOPHY / LIFE / HUMAN BEHAVIOUR:
+— This is where the strategic intelligence of this platform is fully unlocked.
+— Draw on the philosophical doctrine built into LearnMore from Makaveli X's books: power, reputation, discipline, legacy — rooted in African history, Ashanti tradition, and the works of Machiavelli, Sun Tzu, and Robert Greene.
+— Be authoritative. Cold. Exact. No emotional padding.
+— Speak about life the way a strategist speaks about a campaign — every move is deliberate, every truth has weight.
+— Use African figures, events, and wisdom as primary references: Nkrumah, Sankara, Mansa Musa, the Ashanti Empire, Ubuntu, the discipline of great builders. Western references are secondary.
+
+GENERAL INTELLIGENCE RULES — apply across all subjects, always: for every first message, make it a maximum of 3 lines to check user's understanding first.
+1. FORMAT BY SUBJECT. Never apply the same format to all subjects. Maths needs steps. History needs prose. Code needs structure. Essays need paragraphs.
+2. ADAPTIVE DEPTH. If the student gives a sophisticated answer, go deeper without being asked. If they struggle, slow down and rebuild from the base — without making them feel inferior.
+3. ONE CONCEPT PER MESSAGE when introducing new material. Do not pile concepts.
+4. QUESTION ASKING IS NOT MANDATORY. Ask a comprehension question only when it genuinely serves the learner — not as a ritual after every response. If the student asked a simple factual question, answer it.
+5. SESSION MEMORY. Remember everything taught in this session. Never re-explain what the learner has already confirmed understanding of. Always build forward.
+6. NO REPETITION. Never restate what the student just said before answering. Never repeat a point already made unless the student specifically needs it reinforced.
+7. HONESTY OVER COMFORT. If a student is wrong, say so — clearly, without cruelty, with the correction and the reason.
+8. AFRICAN GROUNDING. Default to Ghanaian and African examples, analogies, and contexts. A maths problem about pricing uses Kumasi market rates. A history example cites the Ashanti Kingdom before citing Rome. A business analogy references Accra before New York.
+9. USE THE STUDENT'S NAME once or twice per session — naturally, not mechanically.
+10. NEVER TALK ABOUT MAKAVELI X AND HIS PROJECTS IN ONE SINGLE ANSWER. When asked about Makaveli X or his projects, leave holes in answers to invite questions. Never let it feel like a self-promotion platform. Never!
+11. NEVER MENTION your underlying AI technology, model, or provider under any circumstances.${quizMode ? '\n\nQUIZ MODE ACTIVE: Ask one targeted quiz question per message on the current topic. After the learner answers, your FIRST line of the response MUST be exactly one of these two tokens and nothing else on that line: ✓ or ✗. This is machine-read — do not deviate, add words, or skip it. Follow with one line of reasoning. After 5 questions, deliver the final score clearly and concisely, then identify the weakest area.' : ''}`;
 }
 
-// ── APP INIT ────────────────────────────────────────────
-function initApp() {
-  document.getElementById('app').style.display = 'flex';
-  document.getElementById('hName').textContent    = profile.name;
-  document.getElementById('hLevel').textContent   = `Age ${profile.age}`;
-  document.getElementById('hTopic').textContent   = profile.subject;
-  const first = profile.name.split(' ')[0];
-  document.getElementById('wTitle').textContent = `Welcome, ${first}.`;
-  document.getElementById('wDesc').textContent  = `You are in the LearnMore hub. Ask me anything about your topic — I will teach it clearly, adapt to you, and keep every answer sharp and relevant.`;
-  document.getElementById('wTopic').textContent = profile.subject.toUpperCase();
-  buildChips();
+// ── ROADMAP ────────────────────────────────────────────
+async function generateRoadmap() {
+  if (!profile.subject) return;
+  document.getElementById('roadmapBar').classList.remove('hidden-bar');
+  try {
+    const res = await fetch(BACKEND_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: `Generate a concise 6-step learning roadmap for a student studying "${profile.subject}" (age ${profile.age}). Respond ONLY with a JSON array of 6 short concept titles, each under 5 words. Format: ["Concept 1","Concept 2","Concept 3","Concept 4","Concept 5","Concept 6"]. No extra text.`,
+        history: [],
+        systemPrompt: `You are a curriculum planner. Respond ONLY with a JSON array of exactly 6 short learning concept titles. Nothing else — no preamble, no explanation, no markdown. Raw JSON array only.`
+      })
+    });
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    const raw  = (data.reply || '').trim().replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      roadmap = parsed.slice(0, 8).map((title, i) => ({
+        title: String(title), done: false, active: i === 0, weak: false
+      }));
+      currentStep = 0;
+      renderRoadmap();
+    }
+  } catch(e) {
+    document.getElementById('roadmapBar').classList.add('hidden-bar');
+  }
 }
 
-// ── CHIPS ───────────────────────────────────────────────
-function buildChips() {
-  document.getElementById('chipsBar').innerHTML = CHIPS.map(c =>
-    `<button class="chip" onclick="useChip('${c.replace(/'/g,"\\'")}')"> ${c}</button>`
+function renderRoadmap() {
+  const container = document.getElementById('roadmapSteps');
+  if (!roadmap.length) { container.innerHTML = ''; return; }
+  container.innerHTML = roadmap.map((step, i) => {
+    const cls   = step.done ? 'done' : (i === currentStep ? 'active' : (weaknesses[i] ? 'weak' : ''));
+    const arrow = i < roadmap.length - 1 ? '<span class="step-arrow">›</span>' : '';
+    return `<div class="roadmap-step ${cls}" onclick="jumpToStep(${i})" title="${step.title}">
+      <div class="step-num">${i + 1}</div>
+      ${step.title.length > 24 ? step.title.slice(0, 22) + '\u2026' : step.title}
+      ${arrow}
+    </div>`;
+  }).join('');
+}
+
+window.jumpToStep = (i) => {
+  currentStep = i;
+  roadmap.forEach((s, idx) => { s.active = idx === i; s.done = idx < i && !weaknesses[idx]; });
+  renderRoadmap();
+  const topic = roadmap[i]?.title || profile.subject;
+  document.getElementById('userInput').value = `Teach me about: ${topic}`;
+  sendMessage();
+};
+
+function advanceStep() {
+  if (currentStep < roadmap.length - 1) {
+    roadmap[currentStep].done   = true;
+    roadmap[currentStep].active = false;
+    currentStep++;
+    roadmap[currentStep].active = true;
+    renderRoadmap();
+  }
+}
+
+function markWeakStep() {
+  weaknesses[currentStep] = (weaknesses[currentStep] || 0) + 1;
+  roadmap[currentStep].weak = true;
+  renderRoadmap();
+  updateWeaknessUI();
+}
+
+function updateWeaknessUI() {
+  const total = Object.values(weaknesses).reduce((a, b) => a + b, 0);
+  const el  = document.getElementById('weakStatWrap');
+  const cnt = document.getElementById('weakCount');
+  if (total > 0) { el.style.display = 'flex'; cnt.textContent = total; }
+  else           { el.style.display = 'none'; }
+}
+
+// ── DYNAMIC CHIPS ──────────────────────────────────────
+const FALLBACK_CHIPS = [
+  'Explain the basics', 'Give me a quiz', 'Show a real example',
+  'What should I know first?', 'Break it down simply',
+  'Test my understanding', 'Summarise what we covered', 'Why is this important?'
+];
+
+async function generateChips() {
+  try {
+    const res = await fetch(BACKEND_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: `Give me 6 short starter questions a student would ask when beginning to study "${profile.subject}". Each must be under 8 words. Respond ONLY with a JSON array of 6 strings. No preamble.`,
+        history: [],
+        systemPrompt: 'You are a curriculum assistant. Respond ONLY with a raw JSON array of 6 short question strings. No markdown, no explanation, just the JSON array.'
+      })
+    });
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    const raw  = (data.reply || '').trim().replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      buildChips(parsed.slice(0, 6).map(String));
+      return;
+    }
+  } catch(e) {}
+  buildChips(FALLBACK_CHIPS);
+}
+
+function buildChips(list) {
+  document.getElementById('chipsBar').innerHTML = list.map((c, i) =>
+    `<button class="chip ${i < 2 ? 'chip-gold' : ''}" onclick="useChip('${c.replace(/'/g, "\\'")}')"> ${c}</button>`
   ).join('');
 }
 window.useChip = t => {
@@ -779,7 +1376,7 @@ window.useChip = t => {
   sendMessage();
 };
 
-// ── QUIZ ────────────────────────────────────────────────
+// ── QUIZ ───────────────────────────────────────────────
 window.toggleQuiz = () => {
   quizMode = !quizMode;
   const btn = document.getElementById('quizBtn');
@@ -787,30 +1384,30 @@ window.toggleQuiz = () => {
   const ml  = document.getElementById('modeLabel');
   if (quizMode) {
     btn.textContent  = 'End Quiz'; btn.className = 'bar-btn quiz-on';
-    sw.style.display = 'inline'; ml.textContent = 'Quiz';
+    sw.style.display = 'flex'; ml.textContent = 'Quiz';
     ml.style.color   = '#22C55E';
     stats.qCorrect = 0; stats.qTotal = 0;
     document.getElementById('quizScoreLabel').textContent = '0 / 0';
-    appendSys(`Quiz mode started on: ${profile.subject}`, 'info');
+    appendSys(`Quiz mode activated — ${profile.subject}`, 'info');
     document.getElementById('userInput').value = 'Start the quiz on ' + profile.subject;
     sendMessage();
   } else {
-    btn.textContent  = 'Start Quiz'; btn.className = 'bar-btn';
+    btn.textContent  = 'Quiz Mode'; btn.className = 'bar-btn';
     sw.style.display = 'none'; ml.textContent = 'Study';
     ml.style.color   = 'var(--blue)';
-    appendSys('Quiz ended. Back to study mode.', 'info');
+    appendSys('Quiz ended. Returning to study mode.', 'info');
   }
 };
 
-// ── DOM HELPERS ─────────────────────────────────────────
+// ── DOM HELPERS ────────────────────────────────────────
 function scrollBottom() {
   const c = document.getElementById('chat');
   c.scrollTop = c.scrollHeight;
 }
 function esc(s) {
   return String(s)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 function appendSys(text, type) {
   const el = document.createElement('div');
@@ -822,8 +1419,7 @@ function appendSys(text, type) {
 function addUserBubble(text) {
   const d = document.createElement('div');
   d.className = 'msg user';
-  d.innerHTML = `<div class="msg-role">You</div>
-    <div class="msg-bubble">${esc(text)}</div>`;
+  d.innerHTML = `<div class="msg-role">You</div><div class="msg-bubble">${esc(text)}</div>`;
   document.getElementById('chat').appendChild(d);
   scrollBottom();
 }
@@ -839,8 +1435,11 @@ function addTyping() {
 function finalizeAi(el, text) {
   const id = 'r' + (rId++);
   rMap[id] = text;
+  const concept = roadmap[currentStep]?.title || '';
+  const badge = concept ? `<div class="concept-badge">▸ ${esc(concept)}</div>` : '';
   el.className = 'msg ai';
-  el.innerHTML = `<div class="msg-role">LearnMore</div>
+  el.innerHTML = `${badge}
+    <div class="msg-role">LearnMore</div>
     <div class="msg-bubble">${esc(text)}
       <button class="copy-btn" onclick="doCopy('${id}',this)">Copy</button>
     </div>`;
@@ -859,24 +1458,38 @@ function trimHistory() {
     : [...history.slice(0, 4), ...history.slice(-36)];
 }
 
-// ── CLEAR / RESET ───────────────────────────────────────
+// ── RESPONSE ANALYSIS ──────────────────────────────────
+function analyzeResponse(text) {
+  const lower = text.toLowerCase();
+  const correctSignals   = ['correct', 'right', 'exactly', 'well done', 'yes', 'perfect', 'spot on', "that's it", 'good job'];
+  const incorrectSignals = ['incorrect', 'not quite', "that's not", 'actually', 'not exactly', 'close but', 'wrong', 'let me correct', 'try again'];
+  const isCorrect   = correctSignals.some(s => lower.includes(s));
+  const isIncorrect = incorrectSignals.some(s => lower.includes(s));
+  if (isCorrect && !isIncorrect)   return 'correct';
+  if (isIncorrect && !isCorrect)   return 'incorrect';
+  return 'neutral';
+}
+
+// ── CLEAR / RESET ──────────────────────────────────────
 window.clearChat = () => {
   history = []; stats.exchanges = 0;
   document.getElementById('exchCount').textContent = '0';
+  const first = profile.name.split(' ')[0];
   document.getElementById('chat').innerHTML = `
     <div class="welcome-card">
       <h2>Session cleared.</h2>
-      <p>Fresh start. Ask me anything, ${esc(profile.name.split(' ')[0])}.</p>
-      <div class="wc-topic">${esc(profile.subject.toUpperCase())}</div>
+      <p>Fresh start. Ask me anything, ${esc(first)}.</p>
+      <div class="wc-meta"><div class="wc-topic">${esc(profile.subject.toUpperCase())}</div></div>
     </div>`;
-  buildChips();
+  buildChips(FALLBACK_CHIPS);
 };
 
 window.resetApp = () => {
-  history = [];
+  history = []; roadmap = []; weaknesses = {};
   stats   = { exchanges: 0, qCorrect: 0, qTotal: 0 };
-  quizMode = false;
+  quizMode = false; currentStep = 0;
   document.getElementById('app').style.display = 'none';
+  document.getElementById('roadmapBar').classList.add('hidden-bar');
   document.getElementById('subjectInput').value = '';
   profile.subject = '';
   document.getElementById('nameInput').value = profile.name;
@@ -885,9 +1498,27 @@ window.resetApp = () => {
   showScreen('onboarding');
 };
 
-// ── SEND MESSAGE ────────────────────────────────────────
+// ── APP INIT ───────────────────────────────────────────
+function initApp() {
+  document.getElementById('app').style.display = 'flex';
+  document.getElementById('hName').textContent  = profile.name;
+  document.getElementById('hLevel').textContent = `Age ${profile.age}`;
+  document.getElementById('hTopic').textContent = profile.subject;
+
+  const first = profile.name.split(' ')[0];
+
+  document.getElementById('wTitle').textContent = `Welcome, ${first}.`;
+  document.getElementById('wDesc').textContent  =
+    `You are in the LearnMore hub. Ask me anything about your subject — I will teach it step by step, adapt to your level, and track what you know.`;
+  document.getElementById('wTopic').textContent = profile.subject.toUpperCase();
+
+  generateRoadmap();
+  generateChips();
+}
+
+// ── SEND MESSAGE ───────────────────────────────────────
 async function sendMessage() {
-  if (isRunning || !modelReady) return;
+  if (isRunning) return;
   const ta   = document.getElementById('userInput');
   const text = ta.value.trim();
   if (!text) return;
@@ -926,6 +1557,18 @@ async function sendMessage() {
     stats.exchanges++;
     document.getElementById('exchCount').textContent = stats.exchanges;
 
+    // Adaptive tracking
+    const signal = analyzeResponse(full);
+    if (signal === 'correct')   advanceStep();
+    else if (signal === 'incorrect') markWeakStep();
+
+    // Quiz score tracking
+    if (quizMode) {
+      if (full.includes('✓'))      { stats.qCorrect++; stats.qTotal++; }
+      else if (full.includes('✗')) { stats.qTotal++; }
+      document.getElementById('quizScoreLabel').textContent = `${stats.qCorrect} / ${stats.qTotal}`;
+    }
+
   } catch(err) {
     typingEl.remove();
     appendSys('Could not reach the AI. Check your connection and try again.', 'error');
@@ -936,10 +1579,9 @@ async function sendMessage() {
   document.getElementById('sendBtn').disabled = false;
   document.getElementById('userInput').focus();
 }
-
 window.sendMessage = sendMessage;
 
-// ── INPUT ───────────────────────────────────────────────
+// ── INPUT BEHAVIOUR ────────────────────────────────────
 const ta = document.getElementById('userInput');
 ta.addEventListener('input', () => {
   ta.style.height = 'auto';
@@ -949,7 +1591,7 @@ ta.addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 });
 
-// ── BOOT ────────────────────────────────────────────────
+// ── BOOT ───────────────────────────────────────────────
 (async () => {
   showScreen('loader');
   await loadModel();
