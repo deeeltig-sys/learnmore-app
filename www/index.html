@@ -900,6 +900,16 @@ html, body {
       <div class="auth-error" id="loginError"></div>
       <button class="ob-start ready" id="loginBtn">Log In &rarr;</button>
     </div>
+
+    <!-- SKIP — styled as the lesser choice deliberately -->
+    <div style="margin-top:20px;text-align:center;border-top:1px solid var(--ob-border);padding-top:16px;">
+      <p style="font-size:0.68rem;color:var(--ob-muted);margin-bottom:8px;font-family:'Space Mono',monospace;letter-spacing:0.5px;">
+        An account saves your progress and unlocks memory across sessions.
+      </p>
+      <button id="skipAuthBtn" style="background:none;border:none;color:var(--ob-muted);font-size:0.72rem;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;text-underline-offset:3px;opacity:0.7;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+        Continue without an account
+      </button>
+    </div>
   </div>
 </div>
 
@@ -1279,7 +1289,7 @@ tabLogin.addEventListener('click', () => {
 });
 
 async function handleAuthSuccess(session, name, age) {
-  currentUser = session.user;
+  console.log('[LearnMore] handleAuthSuccess — user:', session.user.id);
   accessToken = session.access_token;
 
   // Resolve name/age — prioritise passed values, then metadata, then students table
@@ -1330,15 +1340,17 @@ async function handleAuthSuccess(session, name, age) {
 
 // ── SAFE LAUNCH ────────────────────────────────────────
 function launchApp() {
+  console.log('[LearnMore] launchApp called — profile:', JSON.stringify(profile));
   // Mark all screens as hidden immediately (opacity 0)
   ['gpuError', 'loader', 'ustedSplash', 'pxSplash', 'authScreen', 'onboarding'].forEach(s => {
     const el = document.getElementById(s);
     if (!el) return;
     el.classList.add('hidden');
-    el.classList.add('gone'); // gone immediately — no delay, no overlap
+    el.classList.add('gone');
   });
-  // Now show the app cleanly
+  console.log('[LearnMore] all screens cleared — calling initApp');
   initApp();
+  console.log('[LearnMore] initApp returned — #app display:', document.getElementById('app').style.display);
 }
 
 signupBtn.addEventListener('click', async () => {
@@ -1350,6 +1362,20 @@ signupBtn.addEventListener('click', async () => {
 
   if (!name || !age || !email || pass.length < 6) {
     signupError.textContent = 'Fill in every field. Password needs at least 6 characters.';
+    return;
+  }
+
+  // Email format validation — must have proper structure and a real TLD (2-6 chars)
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,6}$/;
+  if (!emailRegex.test(email)) {
+    signupError.textContent = 'Enter a valid email address (e.g. yourname@gmail.com).';
+    return;
+  }
+  // Block obviously fake domains
+  const domain = email.split('@')[1].toLowerCase();
+  const fakeDomains = ['fake.com', 'test.com', 'abc.com', 'email.com', 'asdf.com', 'qwerty.com', 'noemail.com'];
+  if (fakeDomains.includes(domain)) {
+    signupError.textContent = 'Use a real email address you can access.';
     return;
   }
 
@@ -1398,6 +1424,14 @@ loginBtn.addEventListener('click', async () => {
     return;
   }
   handleAuthSuccess(data.session, null, null);
+});
+
+// ── SKIP AUTH — guest mode ─────────────────────────────
+document.getElementById('skipAuthBtn').addEventListener('click', () => {
+  currentUser  = null;
+  accessToken  = null;
+  hideAllScreens();
+  showScreen('onboarding');
 });
 
 // ── LOGOUT ─────────────────────────────────────────────
@@ -1784,6 +1818,7 @@ window.resetApp = () => {
 
 // ── APP INIT ───────────────────────────────────────────
 function initApp() {
+  console.log('[LearnMore] initApp — profile:', JSON.stringify(profile));
   document.getElementById('app').style.display = 'flex';
   document.getElementById('hName').textContent  = profile.name;
   document.getElementById('hLevel').textContent = `Age ${profile.age}`;
@@ -1800,7 +1835,21 @@ function initApp() {
   generateChips();
 }
 
-// ── SEND MESSAGE ───────────────────────────────────────
+// ── AUTO MODE DETECTION ────────────────────────────────
+// Detects prompt engineering intent and switches mode automatically
+function detectMode(text) {
+  const t = text.toLowerCase();
+  const promptSignals = [
+    'build me a prompt', 'write a prompt', 'create a prompt',
+    'help me prompt', 'generate a prompt', 'craft a prompt',
+    'make a prompt', 'design a prompt', 'prompt for',
+    'prompt to', 'give me a prompt', 'art of prompting',
+    'prompt mode', 'i need a prompt', 'write me a prompt'
+  ];
+  return promptSignals.some(s => t.includes(s)) ? 'prompt' : 'study';
+}
+
+
 async function sendMessage() {
   if (isRunning) return;
   const ta   = document.getElementById('userInput');
@@ -1809,6 +1858,14 @@ async function sendMessage() {
 
   const wc = document.getElementById('welcomeCard');
   if (wc) wc.remove();
+
+  const detectedMode = detectMode(text);
+  const ml = document.getElementById('modeLabel');
+  if (detectedMode === 'prompt') {
+    ml.textContent = 'Prompt'; ml.style.color = 'var(--gold)';
+  } else if (!quizMode) {
+    ml.textContent = 'Study'; ml.style.color = 'var(--blue)';
+  }
 
   addUserBubble(text);
   ta.value = ''; ta.style.height = 'auto';
@@ -1829,7 +1886,7 @@ async function sendMessage() {
           text: t.content
         })),
         systemPrompt: buildPrompt(),
-        mode: (typeof currentMode !== 'undefined' ? currentMode : 'study'),
+        mode: detectedMode,
         accessToken: accessToken || '',
         subject: profile.subject || 'general'
       })
