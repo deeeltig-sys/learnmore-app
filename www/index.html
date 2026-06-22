@@ -949,6 +949,7 @@ html, body {
       <div class="hbadge" id="hLevel"></div>
       <div class="hbadge" id="hTopic"></div>
       <button class="h-btn" onclick="resetApp()">Change</button>
+      <button class="h-btn" id="logoutBtn" onclick="logOut()" style="border-color:rgba(220,38,38,0.3);color:#FCA5A5;">Log Out</button>
     </div>
   </div>
 
@@ -1190,6 +1191,43 @@ async function loadModel() {
     // Never block entry — modelReady stays true
   }
 
+  // ── CHECK EXISTING SESSION FIRST ──────────────────────
+  // If user is already signed in, restore them directly — never show auth again
+  const { data: sessionData } = await sb.auth.getSession();
+  const existingSession = sessionData?.session;
+
+  if (existingSession) {
+    // User is still signed in — restore their identity
+    currentUser = existingSession.user;
+    accessToken = existingSession.access_token;
+    profile.name = currentUser.user_metadata?.name || '';
+    profile.age  = currentUser.user_metadata?.age  || '';
+
+    // Also restore any saved profile (subject etc.) from localStorage
+    const saved = loadProfile();
+    if (saved && saved.name && saved.age && saved.subject) {
+      profile = { ...profile, ...saved };
+    }
+
+    // Pre-fill onboarding fields in case they land there
+    document.getElementById('nameInput').value    = profile.name;
+    document.getElementById('ageInput').value     = profile.age;
+    document.getElementById('subjectInput').value = profile.subject || '';
+    checkObReady();
+
+    // If full profile exists (name + age + subject), launch directly into the app
+    if (profile.name && profile.age && profile.subject) {
+      launchApp();
+      return;
+    }
+
+    // Profile incomplete — go straight to onboarding (skip auth)
+    hideAllScreens();
+    showScreen('onboarding');
+    return;
+  }
+
+  // ── NO SESSION — normal first-time / logged-out flow ──
   const saved = loadProfile();
   if (saved && saved.name && saved.age && saved.subject) {
     profile = saved;
@@ -1199,13 +1237,12 @@ async function loadModel() {
     checkObReady();
   }
 
-  // First-time: USTED splash → PX splash → onboarding
-  // Returning: PX splash → onboarding (every visit)
+  // First-time: USTED splash → PX splash → auth
+  // Returning (logged out): PX splash → auth
   const tributeSeen = localStorage.getItem('lm_tribute_seen');
   if (!tributeSeen) {
     showScreen('ustedSplash');
   } else {
-    // ProjectX splash every visit with a fresh quote
     const law = LAWS[Math.floor(Math.random() * LAWS.length)];
     document.getElementById('pxQuote').textContent = `"${law.text}"`;
     document.getElementById('pxCite').textContent  = law.cite;
@@ -1245,27 +1282,63 @@ async function handleAuthSuccess(session, name, age) {
   currentUser = session.user;
   accessToken = session.access_token;
 
-  // Ensure a students row exists for this user (id, name, age, email)
+  // Resolve name/age — prioritise passed values, then metadata, then students table
+  // (covers accounts created before metadata was stored)
+  let resolvedName = name || currentUser.user_metadata?.name || '';
+  let resolvedAge  = age  || currentUser.user_metadata?.age  || '';
+
+  if (!resolvedName || !resolvedAge) {
+    try {
+      const { data: student } = await sb.from('students').select('name, age').eq('id', currentUser.id).single();
+      if (student) {
+        resolvedName = resolvedName || student.name || '';
+        resolvedAge  = resolvedAge  || String(student.age || '');
+      }
+    } catch(e) { console.warn('students fetch failed', e); }
+  }
+
+  // Keep students table current
   try {
     await sb.from('students').upsert({
       id: currentUser.id,
-      name: name || currentUser.user_metadata?.name || '',
-      age: age || currentUser.user_metadata?.age || null,
+      name: resolvedName,
+      age: resolvedAge || null,
       email: currentUser.email
     });
   } catch (e) { console.warn('students upsert failed', e); }
 
-  profile.name = name || currentUser.user_metadata?.name || '';
-  profile.age  = age  || currentUser.user_metadata?.age  || '';
+  profile.name = resolvedName;
+  profile.age  = resolvedAge;
 
+  // Check if they already have a saved subject — if so, skip onboarding
+  const saved = loadProfile();
+  if (saved && saved.subject) {
+    profile = { name: profile.name, age: profile.age, subject: saved.subject };
+    launchApp();
+    return;
+  }
+
+  // No subject yet — go to onboarding
   hideAllScreens();
   showScreen('onboarding');
-  // Pre-fill name/age since we already have them from the account
   setTimeout(() => {
     document.getElementById('nameInput').value = profile.name;
     document.getElementById('ageInput').value  = profile.age;
     checkObReady();
   }, 50);
+}
+
+// ── SAFE LAUNCH ────────────────────────────────────────
+function launchApp() {
+  // Mark all screens as hidden immediately (opacity 0)
+  ['gpuError', 'loader', 'ustedSplash', 'pxSplash', 'authScreen', 'onboarding'].forEach(s => {
+    const el = document.getElementById(s);
+    if (!el) return;
+    el.classList.add('hidden');
+    el.classList.add('gone'); // gone immediately — no delay, no overlap
+  });
+  // Now show the app cleanly
+  initApp();
 }
 
 signupBtn.addEventListener('click', async () => {
@@ -1327,6 +1400,23 @@ loginBtn.addEventListener('click', async () => {
   handleAuthSuccess(data.session, null, null);
 });
 
+// ── LOGOUT ─────────────────────────────────────────────
+window.logOut = async () => {
+  await sb.auth.signOut();
+  currentUser = null;
+  accessToken = null;
+  history = []; roadmap = []; weaknesses = {};
+  stats = { exchanges: 0, qCorrect: 0, qTotal: 0 };
+  quizMode = false; currentStep = 0;
+  profile = { name: '', age: '', subject: '' };
+  localStorage.removeItem('lm_pe_v2');
+  const law = LAWS[Math.floor(Math.random() * LAWS.length)];
+  document.getElementById('pxQuote').textContent = `"${law.text}"`;
+  document.getElementById('pxCite').textContent  = law.cite;
+  showScreen('pxSplash'); // show first
+  document.getElementById('app').style.display = 'none'; // then hide app
+};
+
 // ── ONBOARDING ─────────────────────────────────────────
 const nameEl    = document.getElementById('nameInput');
 const ageEl     = document.getElementById('ageInput');
@@ -1350,8 +1440,7 @@ startEl.addEventListener('click', () => {
   profile.subject = subjectEl.value.trim();
   if (!profile.name || !profile.age || !profile.subject) return;
   saveProfile();
-  hideAllScreens();
-  setTimeout(initApp, 430);
+  launchApp();
 });
 
 // ── SYSTEM PROMPT ──────────────────────────────────────
@@ -1681,10 +1770,12 @@ window.resetApp = () => {
   history = []; roadmap = []; weaknesses = {};
   stats   = { exchanges: 0, qCorrect: 0, qTotal: 0 };
   quizMode = false; currentStep = 0;
+  profile.subject = '';
+  // Save profile without subject so next boot doesn't skip onboarding
+  saveProfile();
   document.getElementById('app').style.display = 'none';
   document.getElementById('roadmapBar').classList.add('hidden-bar');
   document.getElementById('subjectInput').value = '';
-  profile.subject = '';
   document.getElementById('nameInput').value = profile.name;
   document.getElementById('ageInput').value  = profile.age;
   checkObReady();
