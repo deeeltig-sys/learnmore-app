@@ -8,8 +8,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="description" content="LearnMore — Pɛ Adesua. AI Learning Hub for African students, powered by ProjectX Web Development."/>
 <title>LearnMore — Pɛ Adesua</title>
-<link rel="icon" type="image/png" href="assets/learnmore.png"/>
-<link rel="apple-touch-icon" href="assets/learnmore.png"/>
+<link rel="icon" type="image/jpeg" href="assets/LearnMore.jpg"/>
+<link rel="apple-touch-icon" href="assets/LearnMore.jpg"/>
 <meta property="og:image" content="assets/learnmore.png"/>
 <meta property="og:title" content="LearnMore — Pɛ Adesua"/>
 <meta property="og:description" content="AI Learning Hub for African students. Built by ProjectX Web Development at USTED, Ghana."/>
@@ -276,6 +276,26 @@ html, body {
   font-weight: 600; margin-bottom: 30px;
   font-family: 'Space Mono', monospace;
 }
+.auth-tabs {
+  display: flex; gap: 8px; margin-bottom: 24px;
+  background: var(--ob-bg); border-radius: 10px; padding: 4px;
+}
+.auth-tab {
+  flex: 1; padding: 10px; border: none; border-radius: 7px;
+  background: transparent; color: var(--ob-muted);
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.82rem;
+  cursor: pointer; transition: background 0.2s, color 0.2s;
+}
+.auth-tab.active {
+  background: var(--ob-surface); color: var(--ob-blue);
+  box-shadow: 0 2px 8px rgba(24,36,60,0.08);
+}
+.auth-error {
+  font-size: 0.78rem; color: #D9534F;
+  margin: -6px 0 14px; min-height: 1em;
+  font-family: 'Space Mono', monospace;
+}
+#loginForm.gone, #signupForm.gone { display: none; }
 .ob-label {
   display: block; font-size: 0.62rem; font-weight: 700;
   letter-spacing: 1.8px; text-transform: uppercase;
@@ -760,6 +780,7 @@ html, body {
 }
 
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 
@@ -831,9 +852,63 @@ html, body {
 </div>
 
 <!-- ── ONBOARDING ────────────────────────────────────── -->
+<div class="screen gone" id="authScreen">
+  <div class="ob-card">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;">
+      <img src="assets/LearnMore.jpg" alt="LearnMore" style="height:48px;width:48px;object-fit:contain;border-radius:12px;box-shadow:0 0 20px rgba(42,127,255,0.3);flex-shrink:0;"/>
+      <div class="ob-logo">LearnMore</div>
+    </div>
+    <div class="ob-pe">Pɛ Adesua &nbsp;·&nbsp; AI Learning Hub</div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabSignup" type="button">Sign Up</button>
+      <button class="auth-tab" id="tabLogin" type="button">Log In</button>
+    </div>
+
+    <!-- SIGN UP FORM -->
+    <div id="signupForm">
+      <div class="ob-field">
+        <label class="ob-label" for="suName">Your Name</label>
+        <input class="ob-input" id="suName" type="text" placeholder="Enter your full name" autocomplete="off"/>
+      </div>
+      <div class="ob-field">
+        <label class="ob-label" for="suAge">Your Age</label>
+        <input class="ob-input" id="suAge" type="number" min="5" max="100" placeholder="e.g. 20" autocomplete="off"/>
+      </div>
+      <div class="ob-field">
+        <label class="ob-label" for="suEmail">Email</label>
+        <input class="ob-input" id="suEmail" type="email" placeholder="you@example.com" autocomplete="off"/>
+      </div>
+      <div class="ob-field">
+        <label class="ob-label" for="suPassword">Password</label>
+        <input class="ob-input" id="suPassword" type="password" placeholder="At least 6 characters" autocomplete="off"/>
+      </div>
+      <div class="auth-error" id="signupError"></div>
+      <button class="ob-start ready" id="signupBtn">Create Account &rarr;</button>
+    </div>
+
+    <!-- LOG IN FORM -->
+    <div id="loginForm" class="gone">
+      <div class="ob-field">
+        <label class="ob-label" for="liEmail">Email</label>
+        <input class="ob-input" id="liEmail" type="email" placeholder="you@example.com" autocomplete="off"/>
+      </div>
+      <div class="ob-field">
+        <label class="ob-label" for="liPassword">Password</label>
+        <input class="ob-input" id="liPassword" type="password" placeholder="Your password" autocomplete="off"/>
+      </div>
+      <div class="auth-error" id="loginError"></div>
+      <button class="ob-start ready" id="loginBtn">Log In &rarr;</button>
+    </div>
+  </div>
+</div>
+
 <div class="screen gone" id="onboarding">
   <div class="ob-card">
-    <div class="ob-logo">LearnMore</div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;">
+      <img src="assets/LearnMore.jpg" alt="LearnMore" style="height:48px;width:48px;object-fit:contain;border-radius:12px;box-shadow:0 0 20px rgba(42,127,255,0.3);flex-shrink:0;"/>
+      <div class="ob-logo">LearnMore</div>
+    </div>
     <div class="ob-pe">Pɛ Adesua &nbsp;·&nbsp; AI Learning Hub</div>
 
     <div class="ob-field">
@@ -942,6 +1017,14 @@ html, body {
 // ── CONFIG ─────────────────────────────────────────────
 const BACKEND_URL = "https://peadesua-backend.onrender.com/ask";
 
+const SUPABASE_URL = "https://swzboxueilloagudvikq.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_A5-2YItoKKzdh0tRGbZ6Jg_HvPWfHgj";
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ── AUTH STATE ─────────────────────────────────────────
+let currentUser   = null;  // Supabase user object once logged in
+let accessToken   = null;  // session token sent to backend with every /ask call
+
 // ── STATE ──────────────────────────────────────────────
 let modelReady  = true;
 let history     = [];
@@ -993,7 +1076,7 @@ function friendlyStatus(pct, isWakingUp) {
 
 // ── SCREENS ────────────────────────────────────────────
 function showScreen(id) {
-  ['gpuError', 'loader', 'ustedSplash', 'pxSplash', 'onboarding'].forEach(s => {
+  ['gpuError', 'loader', 'ustedSplash', 'pxSplash', 'authScreen', 'onboarding'].forEach(s => {
     const el = document.getElementById(s);
     if (!el) return;
     if (s === id) {
@@ -1006,7 +1089,7 @@ function showScreen(id) {
   });
 }
 function hideAllScreens() {
-  ['gpuError', 'loader', 'ustedSplash', 'pxSplash', 'onboarding'].forEach(s => {
+  ['gpuError', 'loader', 'ustedSplash', 'pxSplash', 'authScreen', 'onboarding'].forEach(s => {
     const el = document.getElementById(s);
     if (!el) return;
     el.classList.add('hidden');
@@ -1039,7 +1122,7 @@ window.proceedFromUsted = () => {
 };
 
 window.proceedFromPX = () => {
-  showScreen('onboarding');
+  showScreen('authScreen');
 };
 
 // ── LOADING ────────────────────────────────────────────
@@ -1138,6 +1221,111 @@ function loadProfile() {
   try { const s = localStorage.getItem('lm_pe_v2'); return s ? JSON.parse(s) : null; }
   catch(e) { return null; }
 }
+
+// ── AUTH ───────────────────────────────────────────────
+const tabSignup   = document.getElementById('tabSignup');
+const tabLogin    = document.getElementById('tabLogin');
+const signupForm  = document.getElementById('signupForm');
+const loginForm   = document.getElementById('loginForm');
+const signupError = document.getElementById('signupError');
+const loginError  = document.getElementById('loginError');
+const signupBtn   = document.getElementById('signupBtn');
+const loginBtn    = document.getElementById('loginBtn');
+
+tabSignup.addEventListener('click', () => {
+  tabSignup.classList.add('active'); tabLogin.classList.remove('active');
+  signupForm.classList.remove('gone'); loginForm.classList.add('gone');
+});
+tabLogin.addEventListener('click', () => {
+  tabLogin.classList.add('active'); tabSignup.classList.remove('active');
+  loginForm.classList.remove('gone'); signupForm.classList.add('gone');
+});
+
+async function handleAuthSuccess(session, name, age) {
+  currentUser = session.user;
+  accessToken = session.access_token;
+
+  // Ensure a students row exists for this user (id, name, age, email)
+  try {
+    await sb.from('students').upsert({
+      id: currentUser.id,
+      name: name || currentUser.user_metadata?.name || '',
+      age: age || currentUser.user_metadata?.age || null,
+      email: currentUser.email
+    });
+  } catch (e) { console.warn('students upsert failed', e); }
+
+  profile.name = name || currentUser.user_metadata?.name || '';
+  profile.age  = age  || currentUser.user_metadata?.age  || '';
+
+  hideAllScreens();
+  showScreen('onboarding');
+  // Pre-fill name/age since we already have them from the account
+  setTimeout(() => {
+    document.getElementById('nameInput').value = profile.name;
+    document.getElementById('ageInput').value  = profile.age;
+    checkObReady();
+  }, 50);
+}
+
+signupBtn.addEventListener('click', async () => {
+  signupError.textContent = '';
+  const name  = document.getElementById('suName').value.trim();
+  const age   = document.getElementById('suAge').value.trim();
+  const email = document.getElementById('suEmail').value.trim();
+  const pass  = document.getElementById('suPassword').value;
+
+  if (!name || !age || !email || pass.length < 6) {
+    signupError.textContent = 'Fill in every field. Password needs at least 6 characters.';
+    return;
+  }
+
+  signupBtn.disabled = true;
+  signupBtn.textContent = 'Creating account…';
+
+  const { data, error } = await sb.auth.signUp({
+    email, password: pass,
+    options: { data: { name, age } }
+  });
+
+  signupBtn.disabled = false;
+  signupBtn.textContent = 'Create Account →';
+
+  if (error) {
+    signupError.textContent = error.message;
+    return;
+  }
+  if (!data.session) {
+    signupError.textContent = 'Account created. Check your email to confirm, then log in.';
+    return;
+  }
+  handleAuthSuccess(data.session, name, age);
+});
+
+loginBtn.addEventListener('click', async () => {
+  loginError.textContent = '';
+  const email = document.getElementById('liEmail').value.trim();
+  const pass  = document.getElementById('liPassword').value;
+
+  if (!email || !pass) {
+    loginError.textContent = 'Enter your email and password.';
+    return;
+  }
+
+  loginBtn.disabled = true;
+  loginBtn.textContent = 'Logging in…';
+
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+
+  loginBtn.disabled = false;
+  loginBtn.textContent = 'Log In →';
+
+  if (error) {
+    loginError.textContent = error.message;
+    return;
+  }
+  handleAuthSuccess(data.session, null, null);
+});
 
 // ── ONBOARDING ─────────────────────────────────────────
 const nameEl    = document.getElementById('nameInput');
@@ -1549,7 +1737,10 @@ async function sendMessage() {
           role: t.role === 'assistant' ? 'assistant' : 'user',
           text: t.content
         })),
-        systemPrompt: buildPrompt()
+        systemPrompt: buildPrompt(),
+        mode: (typeof currentMode !== 'undefined' ? currentMode : 'study'),
+        accessToken: accessToken || '',
+        subject: profile.subject || 'general'
       })
     });
 
