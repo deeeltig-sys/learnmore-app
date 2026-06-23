@@ -781,6 +781,12 @@ html, body {
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+  // Fallback if jsdelivr is blocked by browser tracking prevention
+  if (typeof supabase === 'undefined') {
+    document.write('<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"><\/script>');
+  }
+</script>
 </head>
 <body>
 
@@ -1023,7 +1029,7 @@ html, body {
 
 </div>
 
-<script type="module">
+<script>
 
 // ── CONFIG ─────────────────────────────────────────────
 const BACKEND_URL = "https://peadesua-backend.onrender.com/ask";
@@ -1231,9 +1237,14 @@ async function loadModel() {
       return;
     }
 
-    // Profile incomplete — go straight to onboarding (skip auth)
-    hideAllScreens();
-    showScreen('onboarding');
+    // Profile incomplete — go straight to onboarding (skip auth) — instant clear
+    ['gpuError', 'loader', 'ustedSplash', 'pxSplash', 'authScreen'].forEach(s => {
+      const el = document.getElementById(s);
+      if (el) { el.classList.add('hidden'); el.classList.add('gone'); }
+    });
+    const ob = document.getElementById('onboarding');
+    ob.classList.remove('gone');
+    requestAnimationFrame(() => ob.classList.remove('hidden'));
     return;
   }
 
@@ -1290,6 +1301,7 @@ tabLogin.addEventListener('click', () => {
 
 async function handleAuthSuccess(session, name, age) {
   console.log('[LearnMore] handleAuthSuccess — user:', session.user.id);
+  currentUser = session.user;
   accessToken = session.access_token;
 
   // Resolve name/age — prioritise passed values, then metadata, then students table
@@ -1328,9 +1340,14 @@ async function handleAuthSuccess(session, name, age) {
     return;
   }
 
-  // No subject yet — go to onboarding
-  hideAllScreens();
-  showScreen('onboarding');
+  // No subject yet — go to onboarding — instant clear
+  ['gpuError', 'loader', 'ustedSplash', 'pxSplash', 'authScreen'].forEach(s => {
+    const el = document.getElementById(s);
+    if (el) { el.classList.add('hidden'); el.classList.add('gone'); }
+  });
+  const ob = document.getElementById('onboarding');
+  ob.classList.remove('gone');
+  requestAnimationFrame(() => ob.classList.remove('hidden'));
   setTimeout(() => {
     document.getElementById('nameInput').value = profile.name;
     document.getElementById('ageInput').value  = profile.age;
@@ -1394,11 +1411,29 @@ signupBtn.addEventListener('click', async () => {
     signupError.textContent = error.message;
     return;
   }
-  if (!data.session) {
-    signupError.textContent = 'Account created. Check your email to confirm, then log in.';
+
+  // If session came back immediately — go straight in
+  if (data.session) {
+    handleAuthSuccess(data.session, name, age);
     return;
   }
-  handleAuthSuccess(data.session, name, age);
+
+  // Supabase returned no session (can happen even with confirmation off on first signup)
+  // Auto-attempt login with the same credentials
+  signupBtn.disabled = true;
+  signupBtn.textContent = 'Signing you in…';
+  const { data: loginData, error: loginError2 } = await sb.auth.signInWithPassword({ email, password: pass });
+  signupBtn.disabled = false;
+  signupBtn.textContent = 'Create Account →';
+
+  if (loginError2 || !loginData.session) {
+    signupError.textContent = 'Account created. Log in with your email and password to continue.';
+    // Switch to login tab automatically
+    tabLogin.click();
+    document.getElementById('liEmail').value = email;
+    return;
+  }
+  handleAuthSuccess(loginData.session, name, age);
 });
 
 loginBtn.addEventListener('click', async () => {
@@ -1428,15 +1463,23 @@ loginBtn.addEventListener('click', async () => {
 
 // ── SKIP AUTH — guest mode ─────────────────────────────
 document.getElementById('skipAuthBtn').addEventListener('click', () => {
-  currentUser  = null;
-  accessToken  = null;
-  hideAllScreens();
-  showScreen('onboarding');
+  currentUser = null;
+  accessToken = null;
+  // Instant clear — avoid race condition with hideAllScreens 420ms delay
+  ['gpuError', 'loader', 'ustedSplash', 'pxSplash', 'authScreen'].forEach(s => {
+    const el = document.getElementById(s);
+    if (el) { el.classList.add('hidden'); el.classList.add('gone'); }
+  });
+  const ob = document.getElementById('onboarding');
+  ob.classList.remove('gone');
+  requestAnimationFrame(() => ob.classList.remove('hidden'));
 });
 
 // ── LOGOUT ─────────────────────────────────────────────
 window.logOut = async () => {
-  await sb.auth.signOut();
+  if (currentUser) {
+    await sb.auth.signOut();
+  }
   currentUser = null;
   accessToken = null;
   history = []; roadmap = []; weaknesses = {};
@@ -1447,8 +1490,11 @@ window.logOut = async () => {
   const law = LAWS[Math.floor(Math.random() * LAWS.length)];
   document.getElementById('pxQuote').textContent = `"${law.text}"`;
   document.getElementById('pxCite').textContent  = law.cite;
-  showScreen('pxSplash'); // show first
-  document.getElementById('app').style.display = 'none'; // then hide app
+  // Show pxSplash first — restore from gone state explicitly
+  const px = document.getElementById('pxSplash');
+  px.classList.remove('gone');
+  requestAnimationFrame(() => px.classList.remove('hidden'));
+  document.getElementById('app').style.display = 'none';
 };
 
 // ── ONBOARDING ─────────────────────────────────────────
@@ -1823,6 +1869,10 @@ function initApp() {
   document.getElementById('hName').textContent  = profile.name;
   document.getElementById('hLevel').textContent = `Age ${profile.age}`;
   document.getElementById('hTopic').textContent = profile.subject;
+
+  // Hide logout button for guests — they have no session to sign out of
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) logoutBtn.style.display = currentUser ? '' : 'none';
 
   const first = profile.name.split(' ')[0];
 
